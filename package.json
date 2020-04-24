@@ -1,6 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+    "test": "jest",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -58,6 +59,9 @@
     "flow-remove-types": "^2.123.0",
     "husky": ">=4",
     "jest": "^25.4.0",
+    "jest-expo": "^37.0.0",
+    "jest-expo-enzyme": "^1.0.0",
+    "jest-fetch-mock": "^3.0.3",
     "lint-staged": ">=10",
     "prettier": "2.0.5",
     "react-docgen-typescript-loader": "^3.7.2",

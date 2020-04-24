@@ -14,13 +14,22 @@ plugins:
   - react-native
 rules:
   no-use-before-define: off
+  react/jsx-props-no-spreading: off
   '@typescript-eslint/no-use-before-define': off
   react/jsx-curly-newline: off
   import/no-extraneous-dependencies:
     [
       'error',
       {
-        'devDependencies': ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.ts', '**/*.stories.tsx'],
+        'devDependencies':
+          [
+            '**/*.test.ts',
+            '**/*.test.tsx',
+            '**/*.stories.ts',
+            '**/*.stories.tsx',
+            'test-*.js',
+            'jest.config.js',
+          ],
       },
     ]
 env:

@@ -5,22 +5,73 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "storybook": "start-storybook -p 7007",
+    "lint": "eslint src --ext .js,.ts,.tsx",
+    "prettier": "prettier -l './src/**/*.*'"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "0.1.6",
+    "@react-navigation/native": "^5.1.6",
+    "@react-navigation/stack": "^5.2.13",
+    "@types/react-dom": "^16.9.6",
     "expo": "~37.0.3",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
+    "react-native-gesture-handler": "~1.6.0",
+    "react-native-paper": "^3.8.0",
+    "react-native-reanimated": "~1.7.0",
+    "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
-    "@types/react": "~16.9.23",
-    "@types/react-native": "~0.61.17",
+    "@babel/preset-typescript": "^7.9.0",
+    "@expo/webpack-config": "^0.12.1",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-info": "^5.3.18",
+    "@storybook/preset-typescript": "^3.0.0",
+    "@storybook/react": "^5.3.18",
+    "@types/enzyme": "^3.10.5",
+    "@types/jest": "^25.2.1",
+    "@types/react": "^16.9.34",
+    "@types/react-native": "^0.62.3",
+    "@types/react-test-renderer": "^16.9.2",
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
+    "babel-loader": "^8.1.0",
     "babel-preset-expo": "~8.1.0",
-    "typescript": "~3.8.3"
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-airbnb-typescript": "^7.2.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "eslint-plugin-react-native": "^3.8.1",
+    "flow-remove-types": "^2.123.0",
+    "husky": ">=4",
+    "jest": "^25.4.0",
+    "lint-staged": ">=10",
+    "prettier": "2.0.5",
+    "react-docgen-typescript-loader": "^3.7.2",
+    "ts-jest": "^25.4.0",
+    "ts-loader": "^7.0.1",
+    "typescript": "^3.8.3"
   },
-  "private": true
+  "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,css,md}": "prettier --write"
+  }
 }

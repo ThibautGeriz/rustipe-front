@@ -1,19 +1,28 @@
 import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import Item from './components/list-item';
 import type Dashboard from '../models/dashboard';
+import type { RootStackParamList } from '../../../../App';
 
-interface Item {
-  item: Dashboard;
+type DashboardsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Dashboards'>;
+
+interface DashboardListProps {
+  navigation: DashboardsScreenNavigationProp;
 }
 
-export default function App() {
+export default function DashboardList({ navigation }: DashboardListProps) {
   return (
     <View style={styles.container}>
       <FlatList
         data={dashboards}
-        renderItem={({ item }: any) => <Item dashboard={item} onSelectDashboard={() => {}} />}
+        renderItem={({ item: dashboard }: any) => (
+          <Item
+            dashboard={dashboard}
+            onSelectDashboard={() => navigation.navigate('Dashboard', { dashboard })}
+          />
+        )}
         keyExtractor={(item: Dashboard) => item.name}
       />
     </View>

@@ -4,7 +4,7 @@ module.exports = {
   stories: ['../src/**/*.stories.[tj]s', '../src/**/*.stories.[tj]sx'],
   addons: ['@storybook/preset-typescript', '@storybook/addon-actions/register'],
   webpackFinal: async function (config) {
-    console.dir(config.resolve, { depth: null });
+    const c = await createExpoWebpackConfigAsync({ projectRoot: './' });
     config.module.rules.push({
       test: /\.(js|jsx)$/,
       exclude: /node_modules[/\\](?!react-native-vector-icons|react-native-safe-area-view)/,
@@ -32,14 +32,10 @@ module.exports = {
         'react-native-web/dist/vendor/react-native/emitter/EventSubscriptionVendor',
       'react-native/Libraries/EventEmitter/NativeEventEmitter$':
         'react-native-web/dist/vendor/react-native/NativeEventEmitter',
-      '@react-native-community/netinfo':
-        'react-native-web/dist/exports/NetInfo',
-      'react-native/Libraries/Image/AssetSourceResolver$':
-        'expo-asset/build/AssetSourceResolver',
-      'react-native/Libraries/Image/assetPathUtils$':
-        'expo-asset/build/Image/assetPathUtils',
-      'react-native/Libraries/Image/resolveAssetSource$':
-        'expo-asset/build/resolveAssetSource',
+      '@react-native-community/netinfo': 'react-native-web/dist/exports/NetInfo',
+      'react-native/Libraries/Image/AssetSourceResolver$': 'expo-asset/build/AssetSourceResolver',
+      'react-native/Libraries/Image/assetPathUtils$': 'expo-asset/build/Image/assetPathUtils',
+      'react-native/Libraries/Image/resolveAssetSource$': 'expo-asset/build/resolveAssetSource',
     };
 
     return config;

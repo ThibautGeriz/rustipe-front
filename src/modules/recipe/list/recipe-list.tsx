@@ -1,16 +1,9 @@
 import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 import Item from './components/list-item';
 import type Recipe from '../models/recipe';
-import type { RootStackParamList } from '../../../../App';
-
-type DashboardsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Recipes'>;
-
-interface RecipeListProps {
-  navigation: DashboardsScreenNavigationProp;
-}
+import type { RecipeListProps } from './screen';
 
 export default function RecipeList({ navigation }: RecipeListProps) {
   return (
@@ -21,7 +14,7 @@ export default function RecipeList({ navigation }: RecipeListProps) {
           <Item
             key={recipe.title}
             recipe={recipe}
-            onSelectRecipe={() => navigation.navigate('Recipes', { recipe })}
+            onSelectRecipe={() => navigation.navigate('Recipe', { recipe })}
           />
         )}
         keyExtractor={(item: Recipe) => item.title}
@@ -39,6 +32,15 @@ const styles = StyleSheet.create({
 });
 
 const recipes: Array<Recipe> = [
-  { title: 'Lemon Pie', ingredients: [], instructions: [] },
+  {
+    title: 'Lemon pie',
+    instructions: [
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer.',
+    ],
+    ingredients: ['3 lemons', '150g butter', '250g flour', '3 eggs', '150g sugar'],
+  },
   { title: 'Cannelé', ingredients: [], instructions: [] },
 ];

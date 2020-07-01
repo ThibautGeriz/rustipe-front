@@ -2,7 +2,7 @@ import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import RecipeList from './recipe-list';
+import RecipeList from './screen';
 import type { RootStackParamList } from '../../../../App';
 
 export default { title: 'Recipe List', component: RecipeList };

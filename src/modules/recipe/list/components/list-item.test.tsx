@@ -4,19 +4,15 @@ import { shallow } from 'enzyme';
 import ListItem from './list-item';
 
 describe('Dashboard List Item', () => {
-  const onSelectDashboard = jest.fn();
+  const onSelectRecipe = jest.fn();
 
   const getListItem = (props?: any) =>
     shallow(
-      <ListItem
-        dashboard={{ name: 'My Dashboard' }}
-        onSelectDashboard={onSelectDashboard}
-        {...props}
-      />,
+      <ListItem recipe={{ title: 'Lemon Pie' }} onSelectRecipe={onSelectRecipe} {...props} />,
     );
 
   beforeEach(() => {
-    onSelectDashboard.mockReset();
+    onSelectRecipe.mockReset();
   });
 
   describe('by default', () => {
@@ -25,7 +21,7 @@ describe('Dashboard List Item', () => {
       const result = getListItem();
 
       // then
-      expect(result.html()).toContain('My Dashboard');
+      expect(result.html()).toContain('Lemon Pie');
     });
   });
 
@@ -38,9 +34,9 @@ describe('Dashboard List Item', () => {
       result.simulate('press');
     });
 
-    it('should call onSelectDashboard', () => {
+    it('should call onSelectRecipe', () => {
       // then
-      expect(onSelectDashboard).toHaveBeenCalled();
+      expect(onSelectRecipe).toHaveBeenCalled();
     });
   });
 });

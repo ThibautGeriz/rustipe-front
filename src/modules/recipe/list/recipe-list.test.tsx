@@ -3,16 +3,15 @@ import { shallow } from 'enzyme';
 import { FlatList } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import DashboardList from './dashboard-list';
+import RecipeList from './recipe-list';
 import type { RootStackParamList } from '../../../../App';
 
-describe('Dashboard List Item', () => {
+describe('Recipe List Item', () => {
   const navigate = jest.fn();
-  type NavType = StackNavigationProp<RootStackParamList, 'Dashboards'>;
+  type NavType = StackNavigationProp<RootStackParamList, 'Recipes'>;
   const navigation = ({ navigate } as unknown) as NavType;
 
-  const getDashboardList = (props?: any) =>
-    shallow(<DashboardList navigation={navigation} {...props} />);
+  const getRecipeList = (props?: any) => shallow(<RecipeList navigation={navigation} {...props} />);
 
   beforeEach(() => {
     navigate.mockReset();
@@ -21,7 +20,7 @@ describe('Dashboard List Item', () => {
   describe('by default', () => {
     it('renders the list', () => {
       // when
-      const result = getDashboardList();
+      const result = getRecipeList();
 
       // then
       expect(result.exists(FlatList)).toBe(true);

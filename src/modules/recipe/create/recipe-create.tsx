@@ -11,7 +11,7 @@ import {
   HelperText,
 } from 'react-native-paper';
 import { gql, useMutation } from '@apollo/client';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
 
 import { GET_MY_RECIPES } from '../list/recipe-list';
 import type { GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list';
@@ -118,7 +118,9 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
               await addRecipe({ variables: { title, instructions, ingredients } });
               navigation.goBack();
             }}
-          />
+          >
+            Save
+          </Button>
         )}
         {!loading || <ActivityIndicator animating data-testid="ActivityIndicator" />}
       </KeyboardAwareScrollView>

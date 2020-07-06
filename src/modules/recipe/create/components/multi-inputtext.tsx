@@ -54,7 +54,9 @@ export default function MultiInputText({
               setData(data.filter((_, index) => i !== index));
               setNumberOfInput(numberOfInput - 1);
             }}
-          />
+          >
+            {' '}
+          </Button>
         </View>
       ))}
       <Button
@@ -63,7 +65,9 @@ export default function MultiInputText({
         mode="contained"
         style={styles.addButton}
         onPress={() => setNumberOfInput(numberOfInput + 1)}
-      />
+      >
+        Add
+      </Button>
     </View>
   );
 }

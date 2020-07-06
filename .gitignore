@@ -16,3 +16,6 @@ web-report/
 # jest
 .jest/
 coverage/
+
+# storybook
+.out

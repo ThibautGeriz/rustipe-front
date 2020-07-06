@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
-import { FlatList } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MockedProvider } from '@apollo/client/testing';
 import fakeRecipe from '../__data__/fake_recipe';

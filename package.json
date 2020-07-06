@@ -10,6 +10,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "storybook": "start-storybook -p 7007",
+    "build:web": "expo build:web",
     "lint": "eslint src --ext .js,.ts,.tsx",
     "prettier": "prettier -l './src/**/*.*'"
   },

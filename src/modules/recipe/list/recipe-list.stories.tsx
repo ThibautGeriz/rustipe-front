@@ -12,13 +12,20 @@ const mocks: ReadonlyArray<MockedResponse> = [
   {
     request: {
       query: GET_MY_RECIPES,
-      variables: {
-        userId: 'b8427f3a-ac40-4b62-9fe2-688b3b014160',
-      },
     },
     result: {
       data: {
-        getMyRecipes: [fakeRecipe],
+        getMyRecipes: [
+          fakeRecipe,
+          fakeRecipe,
+          fakeRecipe,
+          fakeRecipe,
+          fakeRecipe,
+          fakeRecipe,
+          fakeRecipe,
+          fakeRecipe,
+          fakeRecipe,
+        ],
       },
     },
   },

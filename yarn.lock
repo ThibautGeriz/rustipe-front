@@ -3251,10 +3251,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-native@~0.62.13":
-  version "0.62.15"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.62.15.tgz#32c1f879a3817ca710361d42e2e651407e576df4"
-  integrity sha512-w8Css9gHMHdoo6SZo7OzJwoyleZvDJk4PZh0zc/A4oGF9Q8yrQCJryhx/2i4TNhLVFSuay5keTdD1R4C8qJNiQ==
+"@types/react-native@0.62.8":
+  version "0.62.8"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.62.8.tgz#224602561f75b838ed6e3b5ea37093bb84cffd74"
+  integrity sha512-YEf0tH3xYJpQB12Vvzoy7cqPY3mvbbulTnG3G7ToKOuJuqigAN3K9NNAaxNAAm1zCj+UtObhzcaJtPRwX1z6Fw==
   dependencies:
     "@types/react" "*"
 
@@ -10130,7 +10130,7 @@ jest-enzyme@^7.1.0:
     enzyme-to-json "^3.3.0"
     jest-environment-enzyme "^7.1.2"
 
-jest-expo-enzyme@^1.0.0:
+jest-expo-enzyme@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/jest-expo-enzyme/-/jest-expo-enzyme-1.0.0.tgz#086aca53c16b954d4b43ba66e00d18ad64f69d3a"
   integrity sha512-cNV0dxDCIf75N2+Y2RbNsk13LAHUEoxHhOfm0ktmOf96twOwOkfeqFSgZfx1T5wKlIKXv2UKYu38k51ORr8Y6A==
@@ -14447,10 +14447,18 @@ react-native-gesture-handler@~1.6.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-iphone-x-helper@^1.2.1:
+react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
+
+react-native-keyboard-aware-scroll-view@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.9.1.tgz#9e54b565a5f19b30bed12221d48921781f7630af"
+  integrity sha512-tBZ8rmjELN0F6t5UBp5CW3NYmZXgVnJSzVCssv/OqG2t6kiB+OUTqxNvUP24K+HARX4H+XaW0aEJSFQkQCv6KA==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-iphone-x-helper "^1.0.3"
 
 react-native-paper@^3.8.0:
   version "3.8.0"

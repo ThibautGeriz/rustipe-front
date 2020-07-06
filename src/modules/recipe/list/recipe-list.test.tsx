@@ -13,9 +13,6 @@ const mocks = [
   {
     request: {
       query: GET_MY_RECIPES,
-      variables: {
-        userId: 'b8427f3a-ac40-4b62-9fe2-688b3b014160',
-      },
     },
     result: {
       data: {
@@ -47,7 +44,7 @@ describe('Recipe List Item', () => {
       customRender();
 
       // then
-      expect(screen.getByTestId('ActivityIndicator')).toBeTruthy();
+      expect(screen.getByTestId('FlatList')).toBeTruthy();
     });
   });
 });

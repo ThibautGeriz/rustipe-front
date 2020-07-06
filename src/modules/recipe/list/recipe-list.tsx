@@ -1,15 +1,21 @@
 import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
 import { useQuery, gql } from '@apollo/client';
-import { ActivityIndicator, Text } from 'react-native-paper';
+import { Snackbar, FAB } from 'react-native-paper';
 
 import Item from './components/list-item';
 import type Recipe from '../models/recipe';
 import type { RecipeListProps } from './screen';
 
+export interface GetMyRecipeData {
+  getMyRecipes: Recipe[];
+}
+
+export interface GetMyRecipeVars {}
+
 export const GET_MY_RECIPES = gql`
   query {
-    getMyRecipes(userId: $userId) {
+    getMyRecipes(userId: "b8427f3a-ac40-4b62-9fe2-688b3b014160") {
       title
       instructions
       ingredients
@@ -18,16 +24,24 @@ export const GET_MY_RECIPES = gql`
 `;
 
 export default function RecipeList({ navigation }: RecipeListProps) {
-  const { loading, error, data } = useQuery(GET_MY_RECIPES, {
-    variables: { userId: 'b8427f3a-ac40-4b62-9fe2-688b3b014160' },
-  });
+  const [visible, setVisible] = React.useState(false);
+  const onDismissSnackBar = () => setVisible(false);
+  const onError = () => {
+    setVisible(true);
+  };
 
-  if (loading) return <ActivityIndicator animating data-testid="ActivityIndicator" />;
-  if (error) return <Text>{error.message}</Text>;
+  const { loading, error, data, refetch } = useQuery<GetMyRecipeData, GetMyRecipeVars>(
+    GET_MY_RECIPES,
+    {
+      onError,
+    },
+  );
 
   return (
     <View style={styles.container}>
       <FlatList
+        refreshing={loading}
+        onRefresh={refetch}
         data-testid="FlatList"
         data={(data || {}).getMyRecipes || []}
         renderItem={({ item: recipe }: any) => (
@@ -39,6 +53,11 @@ export default function RecipeList({ navigation }: RecipeListProps) {
         )}
         keyExtractor={(item: Recipe) => item.title}
       />
+      <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
+        {error && error.message ? error.message : 'Failed'}
+      </Snackbar>
+
+      <FAB style={styles.fab} icon="plus" onPress={() => navigation.navigate('RecipeCreation')} />
     </View>
   );
 }
@@ -49,18 +68,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
-
-const recipes: Array<Recipe> = [
-  {
-    title: 'Lemon pie',
-    instructions: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer.',
-    ],
-    ingredients: ['3 lemons', '150g butter', '250g flour', '3 eggs', '150g sugar'],
+  fab: {
+    position: 'absolute',
+    margin: 30,
+    right: 0,
+    bottom: 0,
   },
-  { title: 'Cannelé', ingredients: [], instructions: [] },
-];
+});

@@ -13,8 +13,8 @@ const navigate = action('navigate');
 const goBack = action('goBack');
 
 const navigation = { navigate, goBack } as StackNavigationProp<
-RootStackParamList,
-'RecipeCreation'
+  RootStackParamList,
+  'RecipeCreation'
 >;
 const route = ({
   params: {},

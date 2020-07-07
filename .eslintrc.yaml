@@ -8,10 +8,14 @@ parserOptions:
     jsx: true
 extends:
   - airbnb-typescript
-  - prettier
+  - 'plugin:react/recommended'
+  - 'plugin:prettier/recommended'
+  - 'prettier/@typescript-eslint'
+  - 'prettier/react'
 plugins:
   - jest
   - react-native
+  - prettier
 rules:
   no-use-before-define: off
   react/jsx-props-no-spreading: off

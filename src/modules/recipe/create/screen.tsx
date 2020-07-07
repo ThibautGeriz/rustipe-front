@@ -15,9 +15,11 @@ export interface RecipeCreationProps {
   route: ProfileScreenRouteProp;
 }
 
-export default (props: any) => (
-  <View style={{ height: '100%', width: '100%' }}>
-    <Header {...props} />
-    <RecipeDetail {...props} />
-  </View>
-);
+export default function Screen(props: any) {
+  return (
+    <View style={{ height: '100%', width: '100%' }}>
+      <Header {...props} />
+      <RecipeDetail {...props} />
+    </View>
+  );
+}

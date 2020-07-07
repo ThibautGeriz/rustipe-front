@@ -1,8 +1,19 @@
-const { defaults: tsjPreset } = require('ts-jest/presets');
+const { jsWithBabel: tsjPreset } = require('ts-jest/presets');
+const { withEnzyme } = require('jest-expo-enzyme');
+
+const iosConfig = withEnzyme(require('jest-expo/ios/jest-preset'));
+const androidConfig = withEnzyme(require('jest-expo/android/jest-preset'));
+
+const projects = [iosConfig, androidConfig];
+
+// note: disable `.mjs` file extensions, it's not supported at the moment
+projects.forEach((project) => {
+  // eslint-disable-next-line no-param-reassign
+  project.moduleFileExtensions = project.moduleFileExtensions.filter((ext) => !ext.endsWith('mjs'));
+});
 
 module.exports = {
-  ...tsjPreset,
-  preset: 'jest-expo-enzyme',
+  projects,
   transform: {
     '^.+\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
     ...tsjPreset.transform,

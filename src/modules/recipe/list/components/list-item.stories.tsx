@@ -7,9 +7,9 @@ export default { title: 'Recipe List items', component: ListItem };
 
 const onSelectRecipe = action('item-clicked');
 
-export const withOnlyName = () => (
+export const byDefault = () => (
   <ListItem
     onSelectRecipe={onSelectRecipe}
-    recipe={{ title: 'Lemon Pie', ingredients: [], instructions: [] }}
+    recipe={{ id: 'toto', title: 'Lemon Pie', ingredients: [], instructions: [] }}
   />
 );

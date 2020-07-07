@@ -6,7 +6,7 @@ import { RouteProp } from '@react-navigation/native';
 import RecipeDetail from './recipe-detail';
 import type { RootStackParamList } from '../../../../App';
 
-import recipe from '../__data__/fake_recipe';
+import fakeRecipe from '../__data__/fake_recipe';
 
 describe('Recipe Detail', () => {
   const navigate = jest.fn();
@@ -14,7 +14,7 @@ describe('Recipe Detail', () => {
   const navigation = ({ navigate } as unknown) as NavType;
   const route = ({
     params: {
-      recipe,
+      recipe: fakeRecipe(),
     },
   } as unknown) as RouteProp<RootStackParamList, 'Recipe'>;
 

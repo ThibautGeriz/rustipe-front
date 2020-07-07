@@ -11,16 +11,27 @@ import { client } from './src/graphql/setup';
 
 export type RootStackParamList = {
   Recipes: {};
-  Recipe: { recipe: Recipe };
+  Recipe: { id: string; recipe: Recipe };
   RecipeCreation: {};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+const linking = {
+  prefixes: ['https://loving-kowalevski-577e95.netlify.app', 'rustipe://'],
+  config: {
+    screens: {
+      Recipes: 'recipes',
+      Recipe: 'recipe/:id',
+      RecipeCreation: 'recipes/create',
+    },
+  },
+};
+
 export default function App() {
   return (
     <ApolloProvider client={client}>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="Recipes" component={RecipesList} />
           <Stack.Screen name="Recipe" component={RecipesDetail} />

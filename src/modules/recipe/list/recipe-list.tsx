@@ -16,6 +16,7 @@ export interface GetMyRecipeVars {}
 export const GET_MY_RECIPES = gql`
   query {
     getMyRecipes(userId: "b8427f3a-ac40-4b62-9fe2-688b3b014160") {
+      id
       title
       instructions
       ingredients
@@ -46,18 +47,22 @@ export default function RecipeList({ navigation }: RecipeListProps) {
         data={(data || {}).getMyRecipes || []}
         renderItem={({ item: recipe }: any) => (
           <Item
-            key={recipe.title}
+            key={recipe.id}
             recipe={recipe}
-            onSelectRecipe={() => navigation.navigate('Recipe', { recipe })}
+            onSelectRecipe={() => navigation.navigate('Recipe', { id: recipe.id, recipe })}
           />
         )}
-        keyExtractor={(item: Recipe) => item.title}
+        keyExtractor={(item: Recipe) => item.id}
       />
       <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
         {error && error.message ? error.message : 'Failed'}
       </Snackbar>
 
-      <FAB style={styles.fab} icon="plus" onPress={() => navigation.navigate('RecipeCreation')} />
+      <FAB
+        style={styles.fab}
+        icon="plus"
+        onPress={() => navigation.navigate('RecipeCreation', {})}
+      />
     </View>
   );
 }

@@ -7,7 +7,7 @@ import { Appbar } from 'react-native-paper';
 import Header from './header';
 import type { RootStackParamList } from '../../../../App';
 
-import recipe from '../__data__/fake_recipe';
+import fakeRecipe from '../__data__/fake_recipe';
 
 describe('Header', () => {
   const navigate = jest.fn();
@@ -16,7 +16,7 @@ describe('Header', () => {
   const navigation = ({ navigate, goBack } as unknown) as NavType;
   const route = ({
     params: {
-      recipe,
+      recipe: fakeRecipe(),
     },
   } as unknown) as RouteProp<RootStackParamList, 'Recipe'>;
 

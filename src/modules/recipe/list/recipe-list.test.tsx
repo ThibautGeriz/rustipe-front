@@ -14,7 +14,7 @@ const mocks = [
     },
     result: {
       data: {
-        getMyRecipes: [fakeRecipe],
+        getMyRecipes: [fakeRecipe()],
       },
     },
   },

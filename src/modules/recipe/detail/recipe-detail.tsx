@@ -11,12 +11,14 @@ export default function RecipeDetail({ route }: RecipeDetailProps) {
       <Surface style={styles.ingredients}>
         {recipe.ingredients.map((ingredient, index) => (
           // eslint-disable-next-line react/no-array-index-key
-          <Text key={`ingredient${index}`}>-{ingredient}</Text>
+          <Text key={`ingredient${index}`} testID={`ingredient${index}`}>
+            -{ingredient}
+          </Text>
         ))}
       </Surface>
       {recipe.instructions.map((instruction, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <Paragraph key={`instruction${index}`}>
+        <Paragraph key={`instruction${index}`} testID={`instruction${index}`}>
           {index + 1}.{instruction}
         </Paragraph>
       ))}

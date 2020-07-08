@@ -2,6 +2,7 @@ import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { MockedProvider } from '@apollo/client/testing';
 
 import RecipeDetail from './screen';
 import fakeRecipe from '../__data__/fake_recipe';
@@ -13,10 +14,17 @@ const navigate = action('navigate');
 const goBack = action('goBack');
 
 const navigation = { navigate, goBack } as StackNavigationProp<RootStackParamList, 'Recipe'>;
-const route = ({
-  params: {
-    recipe: fakeRecipe(),
-  },
-} as unknown) as RouteProp<RootStackParamList, 'Recipe'>;
+const recipe = fakeRecipe();
 
-export const byDefault = () => <RecipeDetail navigation={navigation} route={route} />;
+const route = {
+  params: {
+    id: recipe.id,
+    recipe,
+  },
+} as RouteProp<RootStackParamList, 'Recipe'>;
+
+export const byDefault = () => (
+  <MockedProvider mocks={[]} addTypename={false}>
+    <RecipeDetail navigation={navigation} route={route} />
+  </MockedProvider>
+);

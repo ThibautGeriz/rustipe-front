@@ -43,7 +43,7 @@ export default function RecipeList({ navigation }: RecipeListProps) {
       <FlatList
         refreshing={loading}
         onRefresh={refetch}
-        data-testid="FlatList"
+        testID="FlatList"
         data={(data || {}).getMyRecipes || []}
         renderItem={({ item: recipe }: any) => (
           <Item

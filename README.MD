@@ -1,6 +1,8 @@
-# Snooper mobile apps
+# Rustipe front
 
-This repository host the react native code for a sample chart app.
+[![Actions Status](https://github.com/ThibautGeriz/rustipe-front/workflows/build/badge.svg)](https://github.com/ThibautGeriz/rustipe-front/actions)
+
+This repository host the react native code for recipe: Web, Android & iOS
 
 ## Requirements
 

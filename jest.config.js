@@ -1,8 +1,7 @@
 const { jsWithBabel: tsjPreset } = require('ts-jest/presets');
-const { withEnzyme } = require('jest-expo-enzyme');
 
-const iosConfig = withEnzyme(require('jest-expo/ios/jest-preset'));
-const androidConfig = withEnzyme(require('jest-expo/android/jest-preset'));
+const iosConfig = require('jest-expo/ios/jest-preset');
+const androidConfig = require('jest-expo/android/jest-preset');
 
 const projects = [iosConfig, androidConfig];
 

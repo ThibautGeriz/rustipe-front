@@ -12,7 +12,14 @@ export interface RecipeListItemProps {
 }
 
 export default function RecipeListItem({ recipe, onSelectRecipe }: RecipeListItemProps) {
-  return <List.Item style={styles.container} title={recipe.title} onPress={onSelectRecipe} />;
+  return (
+    <List.Item
+      testID="Item"
+      style={styles.container}
+      title={recipe.title}
+      onPress={onSelectRecipe}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

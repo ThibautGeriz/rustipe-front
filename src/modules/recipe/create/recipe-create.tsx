@@ -104,7 +104,7 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
         <Divider style={styles.divider} />
         {loading || (
           <Button
-            data-testid="save-button"
+            testID="save-button"
             icon="content-save"
             compact={false}
             mode="contained"

@@ -2,8 +2,8 @@ import * as React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { MockedProvider } from '@apollo/client/testing';
-import { render, screen } from '@testing-library/react';
-
+import { render, RenderAPI } from 'react-native-testing-library';
+import '@testing-library/jest-native/extend-expect';
 import RecipeCreation from './recipe-create';
 import type { RootStackParamList } from '../../../../App';
 
@@ -23,13 +23,14 @@ describe('Recipe Detail', () => {
     );
 
   describe('by default', () => {
+    let component: RenderAPI;
     beforeEach(() => {
-      customRender();
+      component = customRender();
     });
 
     it('should show the save button', () => {
       // then
-      expect(screen.getByTestId('save-button')).toBeTruthy();
+      expect(component.getByTestId('save-button')).toBeEnabled();
     });
   });
 });

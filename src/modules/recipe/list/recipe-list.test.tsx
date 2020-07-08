@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, RenderAPI } from 'react-native-testing-library';
+import '@testing-library/jest-native/extend-expect';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MockedProvider } from '@apollo/client/testing';
 import fakeRecipe from '../__data__/fake_recipe';
@@ -37,12 +38,13 @@ describe('Recipe List Item', () => {
   });
 
   describe('by default', () => {
+    let component: RenderAPI;
     it('renders the loader', () => {
       // when
-      customRender();
+      component = customRender();
 
       // then
-      expect(screen.getByTestId('FlatList')).toBeTruthy();
+      expect(component.getByTestId('FlatList')).toBeEnabled();
     });
   });
 });

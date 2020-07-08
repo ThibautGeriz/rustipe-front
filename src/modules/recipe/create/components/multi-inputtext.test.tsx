@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { render, RenderAPI, fireEvent } from 'react-native-testing-library';
+import '@testing-library/jest-native/extend-expect';
 
 import MultiInputText from './multi-inputtext';
 
@@ -16,9 +17,9 @@ describe('Multi Input text', () => {
     placeholder: 'some field',
   };
   const getMultiInputText = (props?: any) =>
-    shallow(<MultiInputText {...defaultProps} {...props} />);
+    render(<MultiInputText {...defaultProps} {...props} />);
 
-  let result = getMultiInputText();
+  let result: RenderAPI;
 
   describe('by default', () => {
     beforeEach(() => {
@@ -28,19 +29,19 @@ describe('Multi Input text', () => {
 
     it('contain the add button', () => {
       // then
-      expect(result.exists({ testID: 'add-button' })).toBe(true);
+      expect(result.queryByTestId('add-button')).toBeEnabled();
     });
 
     it('contain the first input text', () => {
       // then
-      expect(result.exists({ testID: 'textInput 1' })).toBe(true);
-      expect(result.exists({ testID: 'textInput 2' })).toBe(false);
+      expect(result.queryByTestId('textInput 1')).toBeEnabled();
+      expect(result.queryByTestId('textInput 2')).toBeFalsy();
     });
 
     it('contain the first delete button', () => {
       // then
-      expect(result.exists({ testID: 'delete-button 1' })).toBe(true);
-      expect(result.exists({ testID: 'delete-button 2' })).toBe(false);
+      expect(result.queryByTestId('delete-button 1')).toBeEnabled();
+      expect(result.queryByTestId('delete-button 2')).toBeFalsy();
     });
   });
 
@@ -50,7 +51,7 @@ describe('Multi Input text', () => {
       result = getMultiInputText();
 
       // when
-      result.find({ testID: 'textInput 1' }).simulate('changeText', 'some data');
+      fireEvent.changeText(result.getByTestId('textInput 1'), 'some data');
     });
 
     it('should call setData', () => {
@@ -64,7 +65,7 @@ describe('Multi Input text', () => {
         result = getMultiInputText();
 
         // when
-        result.find({ testID: 'textInput 1' }).simulate('changeText', 'some data with other');
+        fireEvent.changeText(result.getByTestId('textInput 1'), 'some data with other');
       });
 
       it('should call setData', () => {
@@ -76,25 +77,25 @@ describe('Multi Input text', () => {
     describe('when adding a new row', () => {
       beforeEach(() => {
         // when
-        result.find({ testID: 'add-button' }).simulate('press');
+        fireEvent.press(result.getByTestId('add-button'));
       });
 
       it('show two inputs', () => {
         // then
-        expect(result.exists({ testID: 'textInput 1' })).toBe(true);
-        expect(result.exists({ testID: 'textInput 2' })).toBe(true);
+        expect(result.queryByTestId('textInput 1')).toBeEnabled();
+        expect(result.queryByTestId('textInput 2')).toBeEnabled();
       });
 
       describe('when deleting the first row', () => {
         beforeEach(() => {
           // when
-          result.find({ testID: 'delete-button 1' }).simulate('press');
+          fireEvent.press(result.getByTestId('delete-button 1'));
         });
 
         it('show one inputs', () => {
           // then
-          expect(result.exists({ testID: 'textInput 1' })).toBe(true);
-          expect(result.exists({ testID: 'textInput 2' })).toBe(false);
+          expect(result.queryByTestId('textInput 1')).toBeEnabled();
+          expect(result.queryByTestId('textInput 2')).toBeFalsy();
         });
       });
     });

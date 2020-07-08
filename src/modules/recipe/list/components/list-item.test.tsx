@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { render, fireEvent } from 'react-native-testing-library';
+import '@testing-library/jest-native/extend-expect';
 
 import ListItem from './list-item';
 
@@ -7,9 +8,7 @@ describe('Dashboard List Item', () => {
   const onSelectRecipe = jest.fn();
 
   const getListItem = (props?: any) =>
-    shallow(
-      <ListItem recipe={{ title: 'Lemon Pie' }} onSelectRecipe={onSelectRecipe} {...props} />,
-    );
+    render(<ListItem recipe={{ title: 'Lemon Pie' }} onSelectRecipe={onSelectRecipe} {...props} />);
 
   beforeEach(() => {
     onSelectRecipe.mockReset();
@@ -21,7 +20,7 @@ describe('Dashboard List Item', () => {
       const result = getListItem();
 
       // then
-      expect(result.html()).toContain('Lemon Pie');
+      expect(result.getByText('Lemon Pie')).toBeEnabled();
     });
   });
 
@@ -31,12 +30,12 @@ describe('Dashboard List Item', () => {
       const result = getListItem();
 
       // when
-      result.simulate('press');
+      fireEvent.press(result.getByTestId('Item'));
     });
 
     it('should call onSelectRecipe', () => {
       // then
-      expect(onSelectRecipe).toHaveBeenCalled();
+      expect(onSelectRecipe).toHaveBeenCalledWith();
     });
   });
 });

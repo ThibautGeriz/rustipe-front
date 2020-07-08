@@ -32,6 +32,7 @@ rules:
             '**/*.stories.ts',
             '**/*.stories.tsx',
             'test-*.js',
+            'test-*.ts',
             'jest.config.js',
           ],
       },

@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { render } from 'react-native-testing-library';
+import '@testing-library/jest-native/extend-expect';
+
 import { RouteProp } from '@react-navigation/native';
 
 import RecipeDetail from './recipe-detail';
@@ -12,14 +14,17 @@ describe('Recipe Detail', () => {
   const navigate = jest.fn();
   type NavType = StackNavigationProp<RootStackParamList, 'Recipes'>;
   const navigation = ({ navigate } as unknown) as NavType;
-  const route = ({
+  const recipe = fakeRecipe();
+
+  const route = {
     params: {
-      recipe: fakeRecipe(),
+      id: recipe.id,
+      recipe,
     },
-  } as unknown) as RouteProp<RootStackParamList, 'Recipe'>;
+  } as RouteProp<RootStackParamList, 'Recipe'>;
 
   const getRecipeList = (props?: any) =>
-    shallow(<RecipeDetail navigation={navigation} route={route} {...props} />);
+    render(<RecipeDetail navigation={navigation} route={route} {...props} />);
 
   beforeEach(() => {
     navigate.mockReset();
@@ -31,7 +36,7 @@ describe('Recipe Detail', () => {
       const result = getRecipeList();
 
       // then
-      expect(result.html()).toContain('3 lemons');
+      expect(result.getByTestId('ingredient0')).toHaveTextContent('3 lemons');
     });
 
     it('contain the instruction', () => {
@@ -39,7 +44,7 @@ describe('Recipe Detail', () => {
       const result = getRecipeList();
 
       // then
-      expect(result.html()).toContain('Lorem ipsum dolor sit amet');
+      expect(result.getByTestId('instruction0')).toHaveTextContent('Lorem ipsum dolor sit amet');
     });
   });
 });

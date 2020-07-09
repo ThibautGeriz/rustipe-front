@@ -25,18 +25,12 @@ export const GET_MY_RECIPES = gql`
 `;
 
 export default function RecipeList({ navigation }: RecipeListProps) {
-  const [visible, setVisible] = React.useState(false);
-  const onDismissSnackBar = () => setVisible(false);
-  const onError = () => {
-    setVisible(true);
+  const result = useQuery<GetMyRecipeData, GetMyRecipeVars>(GET_MY_RECIPES);
+  const { loading, data, refetch } = result;
+  let { error } = result;
+  const onDismissSnackBar = () => {
+    error = undefined;
   };
-
-  const { loading, error, data, refetch } = useQuery<GetMyRecipeData, GetMyRecipeVars>(
-    GET_MY_RECIPES,
-    {
-      onError,
-    },
-  );
 
   return (
     <View style={styles.container}>
@@ -54,13 +48,14 @@ export default function RecipeList({ navigation }: RecipeListProps) {
         )}
         keyExtractor={(item: Recipe) => item.id}
       />
-      <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
+      <Snackbar visible={!!error} onDismiss={onDismissSnackBar}>
         {error && error.message ? error.message : 'Failed'}
       </Snackbar>
 
       <FAB
         style={styles.fab}
         icon="plus"
+        testID="fab"
         onPress={() => navigation.navigate('RecipeCreation', {})}
       />
     </View>

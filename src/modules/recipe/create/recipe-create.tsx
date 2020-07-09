@@ -19,7 +19,7 @@ import MultiInputText from './components/multi-inputtext';
 
 import type { RecipeCreationProps } from './screen';
 
-const ADD_RECIPE = gql`
+export const ADD_RECIPE = gql`
   mutation CreateRecipe($title: String!, $instructions: [String!]!, $ingredients: [String!]!) {
     createRecipe(
       newRecipe: {
@@ -70,6 +70,7 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
       <KeyboardAwareScrollView>
         <View>
           <TextInput
+            testID="titleInput"
             error={!!titleError}
             label="Title"
             value={title}
@@ -116,6 +117,7 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
                 return;
               }
               await addRecipe({ variables: { title, instructions, ingredients } });
+
               navigation.goBack();
             }}
           >
@@ -126,7 +128,6 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
       </KeyboardAwareScrollView>
       <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
         {mutationError && mutationError.message ? mutationError.message : undefined}
-        {titleError || undefined}
       </Snackbar>
     </View>
   );

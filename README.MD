@@ -1,6 +1,7 @@
 # Rustipe front
 
 [![Actions Status](https://github.com/ThibautGeriz/rustipe-front/workflows/build/badge.svg)](https://github.com/ThibautGeriz/rustipe-front/actions)
+[![Coverage Status](https://coveralls.io/repos/github/ThibautGeriz/rustipe-front/badge.svg)](https://coveralls.io/github/ThibautGeriz/rustipe-front)
 
 This repository host the react native code for recipe: Web, Android & iOS
 

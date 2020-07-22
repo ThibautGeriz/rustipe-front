@@ -13,8 +13,7 @@ import {
 import { gql, useMutation } from '@apollo/client';
 import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
 
-import { GET_MY_RECIPES } from '../list/recipe-list';
-import type { GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list';
+import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list-query';
 import MultiInputText from './components/multi-inputtext';
 
 import type { RecipeCreationProps } from './screen';

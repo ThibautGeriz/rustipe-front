@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Appbar } from 'react-native-paper';
 import { gql, useMutation } from '@apollo/client';
 
-import type { GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list';
-import { GET_MY_RECIPES } from '../list/recipe-list';
+import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list-query';
 import type { RecipeDetailProps } from './screen';
 
 export const DELETE_RECIPE = gql`

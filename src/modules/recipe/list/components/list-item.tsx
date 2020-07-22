@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
-import { List } from 'react-native-paper';
-
+import { Avatar, Card } from 'react-native-paper';
 import type Recipe from '../../models/recipe';
 
 const { width: viewWidth } = Dimensions.get('window');
@@ -11,20 +10,29 @@ export interface RecipeListItemProps {
   onSelectRecipe: () => void | null;
 }
 
+const SideContentFactory = (recipe: Recipe) => (props: any) =>
+  recipe.imageUrl != null ? (
+    <Avatar.Image {...props} size={55} source={{ uri: recipe.imageUrl }} />
+  ) : null;
+
 export default function RecipeListItem({ recipe, onSelectRecipe }: RecipeListItemProps) {
   return (
-    <List.Item
-      testID="Item"
-      style={styles.container}
-      title={recipe.title}
-      onPress={onSelectRecipe}
-    />
+    <Card testID={`Item-${recipe.id}`} style={styles.container} onPress={onSelectRecipe}>
+      <Card.Title
+        title={recipe.title}
+        subtitle={recipe.description}
+        right={SideContentFactory(recipe)}
+      />
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: viewWidth,
+    width: viewWidth - 10,
+    marginRight: 5,
+    marginLeft: 5,
+    marginTop: 5,
   },
 });

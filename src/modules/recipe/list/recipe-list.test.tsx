@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { Provider } from 'react-native-paper';
 import { render, RenderAPI, fireEvent } from 'react-native-testing-library';
 import '@testing-library/jest-native/extend-expect';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MockedProvider } from '@apollo/client/testing';
 import fakeRecipe from '../__data__/fake_recipe';
 
-import RecipeList, { GET_MY_RECIPES } from './recipe-list';
+import RecipeList from './recipe-list';
+import { GET_MY_RECIPES } from './recipe-list-query';
 import type { RootStackParamList } from '../../../../App';
 
 const recipe = fakeRecipe();
@@ -29,9 +31,11 @@ describe('Recipe List Item', () => {
 
   const customRender = (props?: any, mockOveride?: any[]) =>
     render(
-      <MockedProvider mocks={mockOveride || mocks} addTypename={false}>
-        <RecipeList navigation={navigation} {...props} />
-      </MockedProvider>,
+      <Provider>
+        <MockedProvider mocks={mockOveride || mocks} addTypename={false}>
+          <RecipeList navigation={navigation} {...props} />
+        </MockedProvider>
+      </Provider>,
     );
 
   beforeEach(() => {
@@ -97,20 +101,6 @@ describe('Recipe List Item', () => {
       // then
       expect(component.getByTestId('FlatList')).toHaveProp('refreshing', false);
       expect(component.getByText('aw shucks')).toBeEnabled();
-    });
-  });
-
-  describe('when pressing on the "plus"', () => {
-    beforeEach(() => {
-      // given
-      component = customRender();
-
-      // when
-      fireEvent.press(component.getByTestId('fab'));
-    });
-    it('should navogate to the correct screen', () => {
-      // then
-      expect(navigate).toHaveBeenCalledWith('RecipeCreation', {});
     });
   });
 });

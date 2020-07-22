@@ -59,6 +59,7 @@ describe('Recipe List Item', () => {
 
     it('renders the flatlist with its element ', async () => {
       // then
+      component.debug();
       expect(component.getByTestId('FlatList')).toHaveProp('refreshing', false);
       expect(component.getByText('Lemon pie')).toBeEnabled();
     });

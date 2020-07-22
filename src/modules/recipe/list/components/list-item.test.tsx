@@ -3,12 +3,14 @@ import { render, fireEvent } from 'react-native-testing-library';
 import '@testing-library/jest-native/extend-expect';
 
 import ListItem from './list-item';
+import fakeRecipe from '../../__data__/fake_recipe';
 
 describe('Dashboard List Item', () => {
   const onSelectRecipe = jest.fn();
+  const defaultRecipe = fakeRecipe();
 
   const getListItem = (props?: any) =>
-    render(<ListItem recipe={{ title: 'Lemon Pie' }} onSelectRecipe={onSelectRecipe} {...props} />);
+    render(<ListItem recipe={defaultRecipe} onSelectRecipe={onSelectRecipe} {...props} />);
 
   beforeEach(() => {
     onSelectRecipe.mockReset();
@@ -20,7 +22,7 @@ describe('Dashboard List Item', () => {
       const result = getListItem();
 
       // then
-      expect(result.getByText('Lemon Pie')).toBeEnabled();
+      expect(result.getByText('Lemon pie')).toBeEnabled();
     });
   });
 
@@ -30,7 +32,7 @@ describe('Dashboard List Item', () => {
       const result = getListItem();
 
       // when
-      fireEvent.press(result.getByTestId('Item'));
+      fireEvent.press(result.getByTestId(`Item-${defaultRecipe.id}`));
     });
 
     it('should call onSelectRecipe', () => {

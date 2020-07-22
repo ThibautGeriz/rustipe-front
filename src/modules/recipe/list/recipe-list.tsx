@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
 import { useQuery, gql } from '@apollo/client';
-import { Snackbar, FAB } from 'react-native-paper';
+import { Snackbar, FAB, useTheme } from 'react-native-paper';
 
 import Item from './components/list-item';
 import type Recipe from '../models/recipe';
@@ -18,6 +18,13 @@ export const GET_MY_RECIPES = gql`
     getMyRecipes(userId: "b8427f3a-ac40-4b62-9fe2-688b3b014160") {
       id
       title
+      description
+      imageUrl
+      recipeYield
+      category
+      cuisine
+      cookTimeInMinute
+      prepTimeInMinute
       instructions
       ingredients
     }
@@ -25,6 +32,7 @@ export const GET_MY_RECIPES = gql`
 `;
 
 export default function RecipeList({ navigation }: RecipeListProps) {
+  const { colors } = useTheme();
   const result = useQuery<GetMyRecipeData, GetMyRecipeVars>(GET_MY_RECIPES);
   const { loading, data, refetch } = result;
   let { error } = result;
@@ -33,7 +41,7 @@ export default function RecipeList({ navigation }: RecipeListProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
         refreshing={loading}
         onRefresh={refetch}

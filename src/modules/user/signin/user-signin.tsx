@@ -16,15 +16,15 @@ import { gql, useMutation } from '@apollo/client';
 import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
 import { AUTH_TOKEN_NAME } from '../constants';
 
-import type { UserSignupProps } from './screen';
+import type { UserSigninProps } from './screen';
 
-export const SIGNUP = gql`
+export const SIGNIN = gql`
   mutation($email: String!, $password: String!) {
-    signup(email: $email, password: $password)
+    signin(email: $email, password: $password)
   }
 `;
 
-export default function UserSignup({ navigation }: UserSignupProps) {
+export default function UserSignin({ navigation }: UserSigninProps) {
   const { colors } = useTheme();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState<string>('');
@@ -35,7 +35,7 @@ export default function UserSignup({ navigation }: UserSignupProps) {
     setVisible(true);
   };
 
-  const [signup, { loading, error: mutationError }] = useMutation(SIGNUP, {
+  const [signin, { loading, error: mutationError }] = useMutation(SIGNIN, {
     onError,
   });
   const [emailError, setEmailError] = React.useState<string>('');
@@ -78,7 +78,7 @@ export default function UserSignup({ navigation }: UserSignupProps) {
         </HelperText>
         {loading || (
           <Button
-            testID="signupButton"
+            testID="signinButton"
             style={styles.button}
             mode="contained"
             onPress={async () => {
@@ -96,18 +96,18 @@ export default function UserSignup({ navigation }: UserSignupProps) {
                 return;
               }
               setPasswordError('');
-              const token = await signup({ variables: { email, password } });
-              await AsyncStorage.setItem(AUTH_TOKEN_NAME, token.data.signup);
+              const token = await signin({ variables: { email, password } });
+              await AsyncStorage.setItem(AUTH_TOKEN_NAME, token.data.signin);
               navigation.navigate('Recipes', {});
             }}
           >
-            Signup
+            Signin
           </Button>
         )}
         {!loading || <ActivityIndicator animating data-testid="ActivityIndicator" />}
         <View style={styles.links}>
-          <TouchableHighlight onPress={() => navigation.navigate('Signin', {})}>
-            <Text style={styles.link}>You already have a account?</Text>
+          <TouchableHighlight onPress={() => navigation.navigate('Signup', {})}>
+            <Text style={styles.link}>You do not have a account yet?</Text>
           </TouchableHighlight>
         </View>
       </KeyboardAwareScrollView>

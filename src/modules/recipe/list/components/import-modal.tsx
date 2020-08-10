@@ -14,7 +14,7 @@ import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../recipe-list
 
 export const IMPORT_RECIPE = gql`
   mutation($url: String!) {
-    importRecipe(url: $url, userId: "b8427f3a-ac40-4b62-9fe2-688b3b014160") {
+    importRecipe(url: $url) {
       title
       id
       instructions

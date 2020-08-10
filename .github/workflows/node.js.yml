@@ -35,4 +35,6 @@ jobs:
           node-version: 14.x
       - run: yarn
       - run: npx expo login --non-interactive -u thibaut.gery+1@gmail.com
+        env:
+          EXPO_CLI_PASSWORD: ${{ secrets.EXPO_CLI_PASSWORD }}
       - run: npx expo publish  --non-interactive

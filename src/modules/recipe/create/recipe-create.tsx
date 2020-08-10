@@ -21,12 +21,7 @@ import type { RecipeCreationProps } from './screen';
 export const ADD_RECIPE = gql`
   mutation CreateRecipe($title: String!, $instructions: [String!]!, $ingredients: [String!]!) {
     createRecipe(
-      newRecipe: {
-        title: $title
-        userId: "b8427f3a-ac40-4b62-9fe2-688b3b014160"
-        instructions: $instructions
-        ingredients: $ingredients
-      }
+      newRecipe: { title: $title, instructions: $instructions, ingredients: $ingredients }
     ) {
       title
       id

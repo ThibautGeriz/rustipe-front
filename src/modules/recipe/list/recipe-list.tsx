@@ -5,6 +5,7 @@ import { Snackbar, FAB, useTheme, Portal } from 'react-native-paper';
 
 import Item from './components/list-item';
 import ImportModalVisible from './components/import-modal';
+import NoRecipe from './components/no-recipe';
 import type Recipe from '../models/recipe';
 import type { RecipeListProps } from './screen';
 import { GetMyRecipeData, GetMyRecipeVars, GET_MY_RECIPES } from './recipe-list-query';
@@ -27,6 +28,7 @@ export default function RecipeList({ navigation }: RecipeListProps) {
       <FlatList
         refreshing={loading}
         onRefresh={refetch}
+        ListEmptyComponent={<NoRecipe navigation={navigation} />}
         testID="FlatList"
         data={(data || {}).getMyRecipes || []}
         renderItem={({ item: recipe }: any) => (

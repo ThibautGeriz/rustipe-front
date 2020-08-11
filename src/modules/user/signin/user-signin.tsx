@@ -97,6 +97,9 @@ export default function UserSignin({ navigation }: UserSigninProps) {
               }
               setPasswordError('');
               const token = await signin({ variables: { email, password } });
+              if (!token) {
+                return;
+              }
               await AsyncStorage.setItem(AUTH_TOKEN_NAME, token.data.signin);
               navigation.navigate('Recipes', {});
             }}

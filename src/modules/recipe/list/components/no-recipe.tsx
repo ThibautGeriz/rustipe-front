@@ -16,7 +16,9 @@ export default function NoRecipe({ navigation }: RecipeListProps) {
         This app enables you to store your recipes in one single place
       </Text>
 
-      <Text>You can either add one manually or import it from a URL of your favorite website.</Text>
+      <Text style={styles.text}>
+        You can either add one manually or import it from a URL of your favorite website.
+      </Text>
       <View style={styles.actions}>
         <Button
           testID="importButton"
@@ -52,8 +54,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { marginBottom: 20 },
-  text: { marginBottom: 15 },
+  title: { marginBottom: 20, textAlign: 'center' },
+  text: { marginBottom: 15, textAlign: 'center' },
   actions: { flexDirection: 'row' },
   button: { margin: 10 },
 });

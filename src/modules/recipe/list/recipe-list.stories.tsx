@@ -9,7 +9,7 @@ import { GET_MY_RECIPES } from './recipe-list-query';
 import type { RootStackParamList } from '../../../../App';
 import fakeRecipe from '../__data__/fake_recipe';
 
-const mocks: ReadonlyArray<MockedResponse> = [
+const mocksWithRecipe: ReadonlyArray<MockedResponse> = [
   {
     request: {
       query: GET_MY_RECIPES,
@@ -38,9 +38,30 @@ const navigate = action('navigate');
 
 const navigation = { navigate } as StackNavigationProp<RootStackParamList, 'Recipes'>;
 
-export const byDefault = () => (
+export const withRecipes = () => (
   <Provider>
-    <MockedProvider mocks={mocks} addTypename={false}>
+    <MockedProvider mocks={mocksWithRecipe} addTypename={false}>
+      <RecipeList navigation={navigation} />
+    </MockedProvider>
+  </Provider>
+);
+
+const mocksWithoutRecipe: ReadonlyArray<MockedResponse> = [
+  {
+    request: {
+      query: GET_MY_RECIPES,
+    },
+    result: {
+      data: {
+        getMyRecipes: [],
+      },
+    },
+  },
+];
+
+export const withoutRecipes = () => (
+  <Provider>
+    <MockedProvider mocks={mocksWithoutRecipe} addTypename={false}>
       <RecipeList navigation={navigation} />
     </MockedProvider>
   </Provider>

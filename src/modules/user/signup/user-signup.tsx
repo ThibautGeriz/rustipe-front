@@ -104,13 +104,13 @@ export default function UserSignup({ navigation }: UserSignupProps) {
               navigation.navigate('Recipes', {});
             }}
           >
-            Signup
+            Sign up
           </Button>
         )}
         {!loading || <ActivityIndicator animating data-testid="ActivityIndicator" />}
         <View style={styles.links}>
           <TouchableHighlight onPress={() => navigation.navigate('Signin', {})}>
-            <Text style={styles.link}>You already have a account?</Text>
+            <Text style={styles.link}>You already have a account? Login</Text>
           </TouchableHighlight>
         </View>
       </KeyboardAwareScrollView>

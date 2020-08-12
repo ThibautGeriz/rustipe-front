@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, fireEvent } from 'react-native-testing-library';
 import '@testing-library/jest-native/extend-expect';
 
-import ListItem from './list-item';
+import ListItem from './big-list-item';
 import fakeRecipe from '../../__data__/fake_recipe';
 
 describe('Dashboard List Item', () => {

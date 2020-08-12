@@ -2,8 +2,10 @@ import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { Snackbar, FAB, useTheme, Portal } from 'react-native-paper';
+import { useMediaQuery } from 'react-responsive';
 
-import Item from './components/list-item';
+import SmallItem from './components/small-list-item';
+import BigItem from './components/big-list-item';
 import ImportModalVisible from './components/import-modal';
 import NoRecipe from './components/no-recipe';
 import type Recipe from '../models/recipe';
@@ -12,6 +14,9 @@ import { GetMyRecipeData, GetMyRecipeVars, GET_MY_RECIPES } from './recipe-list-
 
 export default function RecipeList({ navigation }: RecipeListProps) {
   const { colors } = useTheme();
+  const isMobile = useMediaQuery({
+    maxWidth: 900,
+  });
   const [isFabVisible, setFabVisibility] = React.useState(false);
   const onFabVisiblityToggle = () => setFabVisibility(!isFabVisible);
   const [isImportModalVisible, setImportModalVisible] = React.useState(false);
@@ -22,11 +27,13 @@ export default function RecipeList({ navigation }: RecipeListProps) {
   const onDismissSnackBar = () => {
     error = undefined;
   };
+  const Item = isMobile ? SmallItem : BigItem;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
         refreshing={loading}
+        numColumns={isMobile ? 1 : 3}
         onRefresh={refetch}
         ListEmptyComponent={<NoRecipe navigation={navigation} />}
         testID="FlatList"

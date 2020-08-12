@@ -12,10 +12,10 @@ export interface RecipeListItemProps {
 
 const SideContentFactory = (recipe: Recipe) => (props: any) =>
   recipe.imageUrl != null ? (
-    <Avatar.Image {...props} size={55} source={{ uri: recipe.imageUrl }} />
+    <Avatar.Image {...props} style={styles.image} size={55} source={{ uri: recipe.imageUrl }} />
   ) : null;
 
-export default function RecipeListItem({ recipe, onSelectRecipe }: RecipeListItemProps) {
+export default function SmallRecipeListItem({ recipe, onSelectRecipe }: RecipeListItemProps) {
   return (
     <Card testID={`Item-${recipe.id}`} style={styles.container} onPress={onSelectRecipe}>
       <Card.Title
@@ -29,10 +29,13 @@ export default function RecipeListItem({ recipe, onSelectRecipe }: RecipeListIte
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: viewWidth - 10,
     marginRight: 5,
     marginLeft: 5,
     marginTop: 5,
+    width: viewWidth - 10,
+  },
+  image: {
+    marginRight: 5,
+    marginLeft: 5,
   },
 });

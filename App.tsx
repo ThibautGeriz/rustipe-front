@@ -5,6 +5,7 @@ import { ApolloProvider } from '@apollo/client';
 import { Provider as UiProvider } from 'react-native-paper';
 import { AppLoading } from 'expo';
 import { AsyncStorage } from 'react-native';
+import '@expo/match-media';
 
 import RecipesList from './src/modules/recipe/list';
 import RecipesDetail from './src/modules/recipe/detail';

@@ -83,6 +83,7 @@ const ImportModal = ({ visible, onDismiss }: RecipeImportModalProps) => {
             autoFocus
             error={!!mutationError && text !== ''}
             ref={textInput}
+            textContentType="URL"
             label="Url"
             value={text}
             onChangeText={(t: string) => setText(t)}

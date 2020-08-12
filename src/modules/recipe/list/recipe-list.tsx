@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { Snackbar, FAB, useTheme, Portal } from 'react-native-paper';
+// import { useMediaQuery } from 'react-responsive';
 
-import Item from './components/list-item';
+import Item from './components/small-list-item';
 import ImportModalVisible from './components/import-modal';
 import NoRecipe from './components/no-recipe';
 import type Recipe from '../models/recipe';

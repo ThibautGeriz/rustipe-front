@@ -2,7 +2,12 @@ const createExpoWebpackConfigAsync = require('@expo/webpack-config');
 
 module.exports = {
   stories: ['../src/**/*.stories.[tj]s', '../src/**/*.stories.[tj]sx'],
-  addons: ['@storybook/preset-typescript', '@storybook/addon-actions/register'],
+  addons: [
+    '@storybook/preset-typescript',
+    '@storybook/addon-actions/register',
+    '@storybook/addon-viewport',
+    '@storybook/addon-docs',
+  ],
   webpackFinal: async function (config) {
     const c = await createExpoWebpackConfigAsync({ projectRoot: './' });
     config.module.rules.push({

@@ -21,6 +21,7 @@ function recipe(): Recipe {
     cuisine: 'italian',
     cookTimeInMinute: 10,
     prepTimeInMinute: 20,
+    importedFrom: 'marmitton.fr',
   };
 }
 

@@ -10,4 +10,5 @@ export default interface Recipe {
   category?: string;
   cookTimeInMinute?: number;
   prepTimeInMinute?: number;
+  importedFrom?: string;
 }

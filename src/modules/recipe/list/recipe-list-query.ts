@@ -9,7 +9,7 @@ export interface GetMyRecipeVars {}
 
 export const GET_MY_RECIPES = gql`
   query {
-    getMyRecipes(userId: "b8427f3a-ac40-4b62-9fe2-688b3b014160") {
+    getMyRecipes {
       id
       title
       description
@@ -21,6 +21,7 @@ export const GET_MY_RECIPES = gql`
       prepTimeInMinute
       instructions
       ingredients
+      importedFrom
     }
   }
 `;

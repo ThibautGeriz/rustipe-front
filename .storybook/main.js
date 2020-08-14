@@ -3,7 +3,7 @@ const createExpoWebpackConfigAsync = require('@expo/webpack-config');
 module.exports = {
   stories: ['../src/**/*.stories.[tj]s', '../src/**/*.stories.[tj]sx'],
   addons: [
-    '@storybook/preset-typescript',
+    // '@storybook/preset-typescript',
     '@storybook/addon-actions/register',
     '@storybook/addon-viewport',
     '@storybook/addon-docs',
@@ -11,7 +11,7 @@ module.exports = {
   webpackFinal: async function (config) {
     const c = await createExpoWebpackConfigAsync({ projectRoot: './' });
     config.module.rules.push({
-      test: /\.(js|jsx)$/,
+      test: /\.(js|jsx|json)$/,
       exclude: /node_modules[/\\](?!react-native-vector-icons|react-native-safe-area-view)/,
       use: {
         loader: 'babel-loader',
@@ -20,6 +20,8 @@ module.exports = {
           plugins: [
             '@babel/plugin-proposal-class-properties',
             '@babel/plugin-proposal-object-rest-spread',
+            '@babel/plugin-proposal-nullish-coalescing-operator',
+            '@babel/plugin-proposal-optional-chaining',
           ],
         },
       },

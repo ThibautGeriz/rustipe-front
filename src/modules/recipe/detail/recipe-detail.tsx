@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Image, Dimensions, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, ScrollView, Image, Dimensions, View } from 'react-native';
 import { Paragraph, Surface, Text, useTheme, Chip } from 'react-native-paper';
 import { useMediaQuery } from 'react-responsive';
-import * as Linking from 'expo-linking';
 
 import type { RecipeDetailProps } from './screen';
 import type Recipe from '../models/recipe';
@@ -129,16 +128,6 @@ export default function RecipeDetail({ route }: RecipeDetailProps) {
           )}
           <Instructions recipe={recipe} />
         </View>
-      </View>
-      <View style={defaultStyles.footer}>
-        {recipe.importedFrom && (
-          <>
-            <Text>Imported from </Text>
-            <TouchableHighlight onPress={() => Linking.openURL(recipe.importedFrom!)}>
-              <Text style={defaultStyles.link}>{recipe.importedFrom}</Text>
-            </TouchableHighlight>
-          </>
-        )}
       </View>
     </ScrollView>
   );

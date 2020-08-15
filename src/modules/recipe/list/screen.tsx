@@ -16,7 +16,7 @@ export interface RecipeListProps {
 export default function Screen(props: RecipeListProps) {
   return (
     <View style={{ height: '100%', width: '100%' }}>
-      <Header />
+      <Header {...props} />
       <RecipeList {...props} />
     </View>
   );

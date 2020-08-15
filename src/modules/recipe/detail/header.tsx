@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Appbar } from 'react-native-paper';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { GetRecipeData, GetRecipeVars, GET_RECIPE } from './recipe-detail-query';
 
 import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list-query';
 import type { RecipeDetailProps } from './screen';
+import type Recipe from '../models/recipe';
 
 export const DELETE_RECIPE = gql`
   mutation($id: String!) {
@@ -13,6 +15,10 @@ export const DELETE_RECIPE = gql`
 
 const Header = ({ navigation, route }: RecipeDetailProps) => {
   const { id } = route.params;
+  const { data } = useQuery<GetRecipeData, GetRecipeVars>(GET_RECIPE, {
+    variables: { id },
+  });
+  const recipe = data?.getRecipe;
   const [deleteRecipe, { loading }] = useMutation(DELETE_RECIPE, {
     update(cache) {
       const cacheContent = cache.readQuery<GetMyRecipeData, GetMyRecipeVars>({
@@ -23,14 +29,24 @@ const Header = ({ navigation, route }: RecipeDetailProps) => {
       }
       cache.writeQuery({
         query: GET_MY_RECIPES,
-        data: { getMyRecipes: cacheContent.getMyRecipes.filter((recipe) => recipe.id !== id) },
+        data: {
+          getMyRecipes: cacheContent.getMyRecipes.filter((r: Recipe) => r.id !== id),
+        },
       });
     },
   });
   return (
     <Appbar.Header>
       <Appbar.BackAction testID="BackAction" onPress={navigation.goBack} />
-      <Appbar.Content title={route.params.recipe.title} />
+      <Appbar.Content title={recipe?.title} />
+      <Appbar.Action
+        testID="EditButton"
+        color="white"
+        icon="square-edit-outline"
+        onPress={() => {
+          navigation.navigate('RecipeEdition', { id });
+        }}
+      />
       <Appbar.Action
         disabled={loading}
         testID="DeleteButton"

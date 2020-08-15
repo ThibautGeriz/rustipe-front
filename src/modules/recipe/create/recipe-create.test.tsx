@@ -8,7 +8,7 @@ import RecipeCreation, { ADD_RECIPE } from './recipe-create';
 import type { RootStackParamList } from '../../../../App';
 import recipe from '../__data__/fake_recipe';
 
-describe('Recipe Detail', () => {
+describe('Recipe Creation', () => {
   const navigate = jest.fn();
   const goBack = jest.fn();
   type NavType = StackNavigationProp<RootStackParamList, 'RecipeCreation'>;

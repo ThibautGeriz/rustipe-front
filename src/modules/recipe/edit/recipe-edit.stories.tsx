@@ -4,24 +4,24 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { MockedProvider } from '@apollo/client/testing';
 
-import RecipeDetail from './screen';
-import fakeRecipe from '../__data__/fake_recipe';
+import RecipeEdition from './screen';
 import type { RootStackParamList } from '../../../../App';
-import { GET_RECIPE } from './recipe-detail-query';
+import fakeRecipe from '../__data__/fake_recipe';
+import { GET_RECIPE } from '../detail/recipe-detail-query';
 
-export default { title: 'Recipe detail', component: RecipeDetail };
+export default { title: 'Recipe Edition', component: RecipeEdition };
 
 const navigate = action('navigate');
 const goBack = action('goBack');
 
-const navigation = { navigate, goBack } as StackNavigationProp<RootStackParamList, 'Recipe'>;
+const navigation = { navigate, goBack } as StackNavigationProp<RootStackParamList, 'RecipeEdition'>;
 const recipe = fakeRecipe();
 
-const route = {
+const route = ({
   params: {
     id: recipe.id,
   },
-} as RouteProp<RootStackParamList, 'Recipe'>;
+} as unknown) as RouteProp<RootStackParamList, 'RecipeEdition'>;
 
 const mocks = [
   {
@@ -39,6 +39,6 @@ const mocks = [
 
 export const byDefault = () => (
   <MockedProvider mocks={mocks} addTypename={false}>
-    <RecipeDetail navigation={navigation} route={route} />
+    <RecipeEdition navigation={navigation} route={route} />
   </MockedProvider>
 );

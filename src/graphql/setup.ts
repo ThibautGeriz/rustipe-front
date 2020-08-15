@@ -35,7 +35,20 @@ const resetAuth = onError(({ graphQLErrors }: ErrorResponse) => {
 
 export const client = new ApolloClient({
   link: authLink.concat(resetAuth).concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          recipe(_, { args, toReference }) {
+            return toReference({
+              __typename: 'Recipe',
+              id: args?.id,
+            });
+          },
+        },
+      },
+    },
+  }),
 });
 
 export default undefined;

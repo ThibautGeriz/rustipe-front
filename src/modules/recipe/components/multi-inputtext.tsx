@@ -7,7 +7,6 @@ type MultiInputText = {
   setData(data: string[]): any;
   inputProps?: any;
   placeholder: string;
-  defaultNumberOfInputs?: number;
 };
 
 export default function MultiInputText({
@@ -15,12 +14,10 @@ export default function MultiInputText({
   setData,
   inputProps = {},
   placeholder,
-  defaultNumberOfInputs = data.length + 1,
 }: MultiInputText) {
-  const [numberOfInput, setNumberOfInput] = React.useState(defaultNumberOfInputs);
   return (
     <View>
-      {Array.from(Array(numberOfInput).keys()).map((i) => (
+      {Array.from(Array(data.length + 1).keys()).map((i) => (
         <View style={styles.row} key={i}>
           <TextInput
             testID={`textInput ${i + 1}`}
@@ -52,7 +49,6 @@ export default function MultiInputText({
             style={styles.deleteButton}
             onPress={() => {
               setData(data.filter((_, index) => i !== index));
-              setNumberOfInput(numberOfInput - 1);
             }}
           >
             {' '}
@@ -64,7 +60,7 @@ export default function MultiInputText({
         icon="plus"
         mode="contained"
         style={styles.addButton}
-        onPress={() => setNumberOfInput(numberOfInput + 1)}
+        onPress={() => setData([...data, ''])}
       >
         Add
       </Button>

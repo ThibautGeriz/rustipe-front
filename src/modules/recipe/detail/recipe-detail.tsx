@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Image, Dimensions, View } from 'react-native';
+import { StyleSheet, ScrollView, Image, Dimensions, View, RefreshControl } from 'react-native';
 import { Paragraph, Surface, Text, useTheme, Chip } from 'react-native-paper';
 import { useMediaQuery } from 'react-responsive';
+import { useQuery } from '@apollo/client';
 
+import { GetRecipeData, GetRecipeVars, GET_RECIPE } from './recipe-detail-query';
 import type { RecipeDetailProps } from './screen';
 import type Recipe from '../models/recipe';
 
@@ -73,7 +75,7 @@ const Instructions = ({ recipe }: InstructionsProps) => (
 );
 
 export default function RecipeDetail({ route }: RecipeDetailProps) {
-  const { recipe } = route.params;
+  const { id } = route.params;
   const { colors } = useTheme();
   const isMobile = useMediaQuery({
     maxWidth: 500,
@@ -114,19 +116,34 @@ export default function RecipeDetail({ route }: RecipeDetailProps) {
     },
   });
 
+  const { loading, data, refetch } = useQuery<GetRecipeData, GetRecipeVars>(GET_RECIPE, {
+    variables: { id },
+  });
+  const recipe = data?.getRecipe;
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {recipe.imageUrl ? <Image style={styles.image} source={{ uri: recipe.imageUrl }} /> : null}
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={loading}
+          onRefresh={() => {
+            refetch({
+              id,
+            });
+          }}
+        />
+      }
+    >
+      {recipe?.imageUrl ? <Image style={styles.image} source={{ uri: recipe.imageUrl }} /> : null}
 
       <View style={styles.main}>
-        <View style={styles.ingredientsContainer}>
-          <Ingredients recipe={recipe} />
-        </View>
+        <View style={styles.ingredientsContainer}>{recipe && <Ingredients recipe={recipe} />}</View>
         <View style={styles.instructionsContainer}>
-          {recipe.description && (
+          {recipe && recipe.description && (
             <Paragraph style={styles.description}>{recipe.description}</Paragraph>
           )}
-          <Instructions recipe={recipe} />
+          {recipe && <Instructions recipe={recipe} />}
         </View>
       </View>
     </ScrollView>

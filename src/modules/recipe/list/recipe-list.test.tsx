@@ -77,7 +77,6 @@ describe('Recipe List Item', () => {
         // then
         expect(navigate).toHaveBeenCalledWith('Recipe', {
           id: recipe.id,
-          recipe,
         });
       });
     });

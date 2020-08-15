@@ -3,9 +3,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-native/extend-expect';
-import { render, fireEvent, waitFor, RenderAPI } from 'react-native-testing-library';
+import { render, fireEvent, RenderAPI } from 'react-native-testing-library';
 
 import Header, { DELETE_RECIPE } from './header';
+import { GET_RECIPE } from './recipe-detail-query';
+
 import type { RootStackParamList } from '../../../../App';
 
 import fakeRecipe from '../__data__/fake_recipe';
@@ -21,7 +23,6 @@ describe('Header', () => {
   const route = {
     params: {
       id: recipe.id,
-      recipe,
     },
   } as RouteProp<RootStackParamList, 'Recipe'>;
 
@@ -33,6 +34,17 @@ describe('Header', () => {
         variables: { id: recipe.id },
       },
       result: deleteRecipe,
+    },
+    {
+      request: {
+        query: GET_RECIPE,
+        variables: { id: recipe.id },
+      },
+      result: {
+        data: {
+          getRecipe: recipe,
+        },
+      },
     },
   ];
 
@@ -51,9 +63,10 @@ describe('Header', () => {
     );
 
   describe('by default', () => {
-    it('contain the title', () => {
+    it('contain the title', async () => {
       // when
       const result = getHeader();
+      await wait();
 
       // then
       expect(result.getByA11yRole('header')).toHaveTextContent('Lemon pie');
@@ -62,9 +75,10 @@ describe('Header', () => {
 
   describe('when pressing back', () => {
     let elem: RenderAPI;
-    beforeEach(() => {
+    beforeEach(async () => {
       // given
       elem = getHeader();
+      await wait();
 
       // when
       fireEvent.press(elem.getByTestId('BackAction'));
@@ -81,17 +95,18 @@ describe('Header', () => {
     beforeEach(async () => {
       // given
       elem = getHeader();
+      await wait();
 
       // when
       fireEvent.press(elem.getByTestId('DeleteButton'));
+      await wait();
     });
 
-    it('should go back', async () => {
+    it('should delete the recipe', async () => {
       // then
-      await waitFor(() => {
-        expect(navigate).toHaveBeenCalledWith('Recipes', {});
-      });
       expect(deleteRecipe).toHaveBeenCalled();
     });
   });
 });
+
+const wait = () => new Promise((resolve) => setTimeout(resolve, 0));

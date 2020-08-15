@@ -42,7 +42,7 @@ export default function RecipeList({ navigation }: RecipeListProps) {
           <Item
             key={recipe.id}
             recipe={recipe}
-            onSelectRecipe={() => navigation.navigate('Recipe', { id: recipe.id, recipe })}
+            onSelectRecipe={() => navigation.navigate('Recipe', { id: recipe.id })}
           />
         )}
         keyExtractor={(item: Recipe) => item.id}

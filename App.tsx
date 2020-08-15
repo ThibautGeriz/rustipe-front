@@ -12,14 +12,13 @@ import RecipesDetail from './src/modules/recipe/detail';
 import RecipesCreate from './src/modules/recipe/create';
 import UserSignup from './src/modules/user/signup';
 import UserSignin from './src/modules/user/signin';
-import type Recipe from './src/modules/recipe/models/recipe';
 import { client } from './src/graphql/setup';
 import { AUTH_TOKEN_NAME } from './src/modules/user/constants';
 import { navigationRef } from './src/rootNavigation';
 
 export type RootStackParamList = {
   Recipes: {};
-  Recipe: { id: string; recipe: Recipe };
+  Recipe: { id: string };
   RecipeCreation: {};
   Signup: {};
   Signin: {};

@@ -14,7 +14,7 @@ import { gql, useMutation } from '@apollo/client';
 import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
 
 import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list-query';
-import MultiInputText from './components/multi-inputtext';
+import MultiInputText from '../components/multi-inputtext';
 
 import type { RecipeCreationProps } from './screen';
 
@@ -23,10 +23,18 @@ export const ADD_RECIPE = gql`
     createRecipe(
       newRecipe: { title: $title, instructions: $instructions, ingredients: $ingredients }
     ) {
-      title
       id
+      title
+      description
+      imageUrl
+      recipeYield
+      category
+      cuisine
+      cookTimeInMinute
+      prepTimeInMinute
       instructions
       ingredients
+      importedFrom
     }
   }
 `;

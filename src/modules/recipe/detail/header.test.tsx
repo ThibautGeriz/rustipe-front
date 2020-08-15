@@ -107,6 +107,24 @@ describe('Header', () => {
       expect(deleteRecipe).toHaveBeenCalled();
     });
   });
+
+  describe('when pressing edit', () => {
+    let elem: RenderAPI;
+    beforeEach(async () => {
+      // given
+      elem = getHeader();
+      await wait();
+
+      // when
+      fireEvent.press(elem.getByTestId('EditButton'));
+      await wait();
+    });
+
+    it('should go on the edit page', async () => {
+      // then
+      expect(navigate).toHaveBeenCalledWith('RecipeEdition', { id: recipe.id });
+    });
+  });
 });
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 0));

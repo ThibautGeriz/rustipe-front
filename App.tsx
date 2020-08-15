@@ -10,6 +10,7 @@ import '@expo/match-media';
 import RecipesList from './src/modules/recipe/list';
 import RecipesDetail from './src/modules/recipe/detail';
 import RecipesCreate from './src/modules/recipe/create';
+import RecipesEdit from './src/modules/recipe/edit';
 import UserSignup from './src/modules/user/signup';
 import UserSignin from './src/modules/user/signin';
 import { client } from './src/graphql/setup';
@@ -19,6 +20,7 @@ import { navigationRef } from './src/rootNavigation';
 export type RootStackParamList = {
   Recipes: {};
   Recipe: { id: string };
+  RecipeEdition: { id: string };
   RecipeCreation: {};
   Signup: {};
   Signin: {};
@@ -32,6 +34,7 @@ const linking = {
     screens: {
       Recipes: 'recipes',
       Recipe: 'recipes/:id',
+      RecipeEdition: 'recipes/:id/edit',
       RecipeCreation: 'recipes/create',
       Signup: 'signup',
       Signin: 'signin',
@@ -63,6 +66,7 @@ export default function App() {
             <Stack.Screen name="Signup" component={UserSignup} />
             <Stack.Screen name="Recipe" component={RecipesDetail} />
             <Stack.Screen name="RecipeCreation" component={RecipesCreate} />
+            <Stack.Screen name="RecipeEdition" component={RecipesEdit} />
             <Stack.Screen name="Signin" component={UserSignin} />
           </Stack.Navigator>
         </NavigationContainer>

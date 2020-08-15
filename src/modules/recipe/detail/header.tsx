@@ -40,6 +40,14 @@ const Header = ({ navigation, route }: RecipeDetailProps) => {
       <Appbar.BackAction testID="BackAction" onPress={navigation.goBack} />
       <Appbar.Content title={recipe?.title} />
       <Appbar.Action
+        testID="EditButton"
+        color="white"
+        icon="square-edit-outline"
+        onPress={() => {
+          navigation.navigate('RecipeEdition', { id });
+        }}
+      />
+      <Appbar.Action
         disabled={loading}
         testID="DeleteButton"
         color="white"

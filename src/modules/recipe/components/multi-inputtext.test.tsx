@@ -82,8 +82,7 @@ describe('Multi Input text', () => {
 
       it('show two inputs', () => {
         // then
-        expect(result.queryByTestId('textInput 1')).toBeEnabled();
-        expect(result.queryByTestId('textInput 2')).toBeEnabled();
+        expect(setData).toHaveBeenLastCalledWith(['']);
       });
 
       describe('when deleting the first row', () => {

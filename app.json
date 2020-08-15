@@ -16,7 +16,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "org.tgery.rustipe",
+      "buildNumber": "0.0.1",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "org.tgery.rustipe",
+      "versionCode": 1
     }
   }
 }

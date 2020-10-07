@@ -23,12 +23,14 @@ const Header = ({ navigation, route }: RecipeDetailProps) => {
     update(cache) {
       const cacheContent = cache.readQuery<GetMyRecipeData, GetMyRecipeVars>({
         query: GET_MY_RECIPES,
+        variables: { query: null },
       });
       if (!cacheContent) {
         return;
       }
       cache.writeQuery({
         query: GET_MY_RECIPES,
+        variables: { query: null },
         data: {
           getMyRecipes: cacheContent.getMyRecipes.filter((r: Recipe) => r.id !== id),
         },

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { Snackbar, FAB, useTheme, Portal } from 'react-native-paper';
+import { Snackbar, FAB, useTheme, Portal, Searchbar } from 'react-native-paper';
 import { useMediaQuery } from 'react-responsive';
 
 import SmallItem from './components/small-list-item';
@@ -21,8 +21,16 @@ export default function RecipeList({ navigation }: RecipeListProps) {
   const onFabVisiblityToggle = () => setFabVisibility(!isFabVisible);
   const [isImportModalVisible, setImportModalVisible] = React.useState(false);
   const onImportModalVisibilityToggle = () => setImportModalVisible(!isImportModalVisible);
-  const result = useQuery<GetMyRecipeData, GetMyRecipeVars>(GET_MY_RECIPES);
+  const [searchQuery, setSearchQuery] = React.useState<string | null>(null);
+  const result = useQuery<GetMyRecipeData, GetMyRecipeVars>(GET_MY_RECIPES, {
+    variables: { query: searchQuery },
+  });
   const { loading, data, refetch } = result;
+  const onChangeSearch = (query: string) => {
+    setSearchQuery(query);
+    refetch({ query });
+  };
+
   let { error } = result;
   const onDismissSnackBar = () => {
     error = undefined;
@@ -31,10 +39,18 @@ export default function RecipeList({ navigation }: RecipeListProps) {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Searchbar
+        placeholder="Search"
+        testID="Searchbar"
+        style={styles.searchBox}
+        onChangeText={onChangeSearch}
+        value={searchQuery || ''}
+      />
+
       <FlatList
         refreshing={loading}
         numColumns={isMobile ? 1 : 3}
-        onRefresh={refetch}
+        onRefresh={() => refetch({ query: searchQuery })}
         ListEmptyComponent={<NoRecipe navigation={navigation} />}
         testID="FlatList"
         data={(data || {}).getMyRecipes || []}
@@ -86,5 +102,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  searchBox: {
+    margin: 5,
   },
 });

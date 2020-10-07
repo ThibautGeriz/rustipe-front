@@ -56,12 +56,14 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
     update(cache, { data }) {
       const cacheContent = cache.readQuery<GetMyRecipeData, GetMyRecipeVars>({
         query: GET_MY_RECIPES,
+        variables: { query: null },
       });
       if (!cacheContent) {
         return;
       }
       cache.writeQuery({
         query: GET_MY_RECIPES,
+        variables: { query: null },
         data: { getMyRecipes: cacheContent.getMyRecipes.concat([data.createRecipe]) },
       });
     },

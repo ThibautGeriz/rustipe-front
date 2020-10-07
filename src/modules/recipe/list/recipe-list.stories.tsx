@@ -13,6 +13,9 @@ const mocksWithRecipe: ReadonlyArray<MockedResponse> = [
   {
     request: {
       query: GET_MY_RECIPES,
+      variables: {
+        query: null,
+      },
     },
     result: {
       data: {

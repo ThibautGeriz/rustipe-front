@@ -15,6 +15,9 @@ const mocks = [
   {
     request: {
       query: GET_MY_RECIPES,
+      variables: {
+        query: null,
+      },
     },
     result: {
       data: {
@@ -44,6 +47,14 @@ describe('Recipe List Item', () => {
   let component: RenderAPI;
 
   describe('by default', () => {
+    it('renders the empty search bar', () => {
+      // when
+      component = customRender();
+
+      // then
+      expect(component.getByPlaceholder('Search')).toHaveProp('value', null);
+    });
+
     it('renders the flatlist loading', () => {
       // when
       component = customRender();
@@ -89,6 +100,7 @@ describe('Recipe List Item', () => {
         {
           request: {
             query: GET_MY_RECIPES,
+            variables: { query: null },
           },
           error: new Error('aw shucks'),
         },

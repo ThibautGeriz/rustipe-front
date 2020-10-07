@@ -5,11 +5,13 @@ export interface GetMyRecipeData {
   getMyRecipes: Recipe[];
 }
 
-export interface GetMyRecipeVars {}
+export interface GetMyRecipeVars {
+  query: string | null;
+}
 
 export const GET_MY_RECIPES = gql`
-  query {
-    getMyRecipes {
+  query($query: String) {
+    getMyRecipes(query: $query) {
       id
       title
       description

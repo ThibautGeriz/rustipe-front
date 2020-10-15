@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, AsyncStorage, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, TouchableHighlight } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   TextInput,
   Title,

@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { ApolloProvider } from '@apollo/client';
 import { Provider as UiProvider } from 'react-native-paper';
 import { AppLoading } from 'expo';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import '@expo/match-media';
 
 import RecipesList from './src/modules/recipe/list';
@@ -53,7 +53,7 @@ export default function App() {
 
   if (!isReady) {
     return (
-      <AppLoading startAsync={setup} onFinish={() => setIsReady(true)} onError={console.warn} />
+      <AppLoading startAsync={setup} onFinish={() => setIsReady(true)} onError={console.error} />
     );
   }
 

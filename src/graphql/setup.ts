@@ -1,7 +1,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError, ErrorResponse } from '@apollo/client/link/error';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { AUTH_TOKEN_NAME } from '../modules/user/constants';
 import { navigate } from '../rootNavigation';

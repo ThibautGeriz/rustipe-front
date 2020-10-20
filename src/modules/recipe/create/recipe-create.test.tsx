@@ -70,7 +70,7 @@ describe('Recipe Creation', () => {
           {
             request: {
               query: ADD_RECIPE,
-              variables: { title: 'THE title', instructions: [], ingredients: [] },
+              variables: { title: 'THE title', instructions: [], ingredients: [], imageUrl: null },
             },
             result: addRecipe,
           },
@@ -99,7 +99,7 @@ describe('Recipe Creation', () => {
           expect(goBack).toHaveBeenCalled();
         });
 
-        it('should show the error message', () => {
+        it('should add the recipe', () => {
           // then
           expect(addRecipe).toHaveBeenCalled();
         });

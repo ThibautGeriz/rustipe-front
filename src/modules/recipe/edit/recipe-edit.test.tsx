@@ -145,7 +145,7 @@ describe('Recipe Edition', () => {
           expect(navigate).toHaveBeenCalledWith('Recipe', { id: recipe.id });
         });
 
-        it('should show the error message', () => {
+        it('should update the recipe', () => {
           // then
           expect(updateRecipe).toHaveBeenCalled();
         });

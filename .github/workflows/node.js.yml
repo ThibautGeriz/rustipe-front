@@ -22,6 +22,8 @@ jobs:
       - run: yarn test --coverage true
         env:
           CI: true
+      - run: yarn build-storybook
+
 
   deploy-on-expo:
     runs-on: ubuntu-latest

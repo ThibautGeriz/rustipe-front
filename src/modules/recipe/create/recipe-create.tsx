@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import {
   TextInput,
   Subheading,
@@ -11,17 +11,30 @@ import {
   HelperText,
 } from 'react-native-paper';
 import { gql, useMutation } from '@apollo/client';
-import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
 
+import PhotoUploader from '../components/photo-uploader';
+import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
 import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list-query';
 import MultiInputText from '../components/multi-inputtext';
 
 import type { RecipeCreationProps } from './screen';
 
+const { width: viewWidth, height: viewHeight } = Dimensions.get('window');
+
 export const ADD_RECIPE = gql`
-  mutation CreateRecipe($title: String!, $instructions: [String!]!, $ingredients: [String!]!) {
+  mutation CreateRecipe(
+    $title: String!
+    $instructions: [String!]!
+    $ingredients: [String!]!
+    $imageUrl: String
+  ) {
     createRecipe(
-      newRecipe: { title: $title, instructions: $instructions, ingredients: $ingredients }
+      newRecipe: {
+        title: $title
+        instructions: $instructions
+        ingredients: $ingredients
+        imageUrl: $imageUrl
+      }
     ) {
       id
       title
@@ -46,6 +59,10 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
 
   const [visible, setVisible] = React.useState(false);
   const [titleError, setTitleError] = React.useState<string>('');
+  const [imageUrl, setImageUrl] = React.useState<string | null>(null);
+  const onPhotoUploding = () => null;
+  const onPhotoUploadError = () => null;
+
   const onDismissSnackBar = () => setVisible(false);
   const onError = () => {
     setVisible(true);
@@ -72,6 +89,13 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
   return (
     <View style={styles.container}>
       <KeyboardAwareScrollView>
+        <PhotoUploader
+          style={styles.photoUploader}
+          onPhotoUploding={onPhotoUploding}
+          onPhotoUploded={setImageUrl}
+          onPhotoUploadError={onPhotoUploadError}
+          url={imageUrl}
+        />
         <View>
           <TextInput
             testID="titleInput"
@@ -120,7 +144,7 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
                 setVisible(true);
                 return;
               }
-              await addRecipe({ variables: { title, instructions, ingredients } });
+              await addRecipe({ variables: { title, instructions, ingredients, imageUrl } });
 
               navigation.goBack();
             }}
@@ -154,5 +178,10 @@ const styles = StyleSheet.create({
   divider: { marginTop: 15, marginBottom: 15 },
   instructionsInput: {
     margin: 2,
+  },
+  photoUploader: {
+    margin: 5,
+    width: viewWidth - 30,
+    height: viewHeight / 3,
   },
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Appbar } from 'react-native-paper';
 import { useApolloClient } from '@apollo/client';
 

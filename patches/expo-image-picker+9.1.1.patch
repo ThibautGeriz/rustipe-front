@@ -1,0 +1,14 @@
+diff --git a/node_modules/expo-image-picker/build/ImagePicker.js b/node_modules/expo-image-picker/build/ImagePicker.js
+index a2b807e..db48eca 100644
+--- a/node_modules/expo-image-picker/build/ImagePicker.js
++++ b/node_modules/expo-image-picker/build/ImagePicker.js
+@@ -46,7 +46,7 @@ export async function launchImageLibraryAsync(options) {
+     if (!ExponentImagePicker.launchImageLibraryAsync) {
+         throw new UnavailabilityError('ImagePicker', 'launchImageLibraryAsync');
+     }
+-    return await ExponentImagePicker.launchImageLibraryAsync(options ?? {});
++    return await ExponentImagePicker.launchImageLibraryAsync(options != null ? options : {});
+ }
+ export { MediaTypeOptions, VideoExportPreset, PermissionStatus, };
+ //# sourceMappingURL=ImagePicker.js.map
+\ No newline at end of file

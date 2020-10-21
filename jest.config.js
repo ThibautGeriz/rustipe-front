@@ -13,6 +13,7 @@ projects.forEach((project) => {
 
 module.exports = {
   projects,
+  preset: 'jest-expo',
   transform: {
     '^.+\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
     ...tsjPreset.transform,

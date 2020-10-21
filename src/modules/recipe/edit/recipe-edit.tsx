@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, RefreshControl } from 'react-native';
+import { StyleSheet, View, RefreshControl, Dimensions } from 'react-native';
 import {
   TextInput,
   Subheading,
@@ -12,15 +12,16 @@ import {
 } from 'react-native-paper';
 import { gql, useMutation, useQuery } from '@apollo/client';
 
-import undefined, {
-  KeyboardAwareScrollView,
-} from '../../components/react-native-keyboard-aware-scroll-view';
+import PhotoUploader from '../components/photo-uploader';
+import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
 import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list-query';
 import MultiInputText from '../components/multi-inputtext';
 import { GetRecipeData, GetRecipeVars, GET_RECIPE } from '../detail/recipe-detail-query';
 import type Recipe from '../models/recipe';
 
 import type { RecipeEditionProps } from './screen';
+
+const { width: viewWidth, height: viewHeight } = Dimensions.get('window');
 
 export const UPDATE_RECIPE = gql`
   mutation UpdateRecipe(
@@ -42,7 +43,6 @@ export const UPDATE_RECIPE = gql`
       newRecipe: {
         title: $title
         description: $description
-        imageUrl: $imageUrl
         recipeYield: $recipeYield
         category: $category
         cuisine: $cuisine
@@ -51,6 +51,7 @@ export const UPDATE_RECIPE = gql`
         instructions: $instructions
         ingredients: $ingredients
         importedFrom: $importedFrom
+        imageUrl: $imageUrl
       }
     ) {
       id
@@ -84,10 +85,13 @@ export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
   );
   const [instructions, setInstructions] = React.useState<string[]>([]);
   const [ingredients, setIngredients] = React.useState<string[]>([]);
+  const [imageUrl, setImageUrl] = React.useState<string | null>(null);
 
   const [visible, setVisible] = React.useState(false);
   const [titleError, setTitleError] = React.useState<string>('');
   const onDismissSnackBar = () => setVisible(false);
+  const onPhotoUploding = () => null;
+  const onPhotoUploadError = () => null;
   const onError = () => {
     setVisible(true);
   };
@@ -105,6 +109,7 @@ export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
       setCookTimeInMinute(getRecipe.cookTimeInMinute);
       setPrepTimeInMinute(getRecipe.prepTimeInMinute);
       setRecipeYield(getRecipe.recipeYield);
+      setImageUrl(getRecipe.imageUrl ?? null);
     },
   });
 
@@ -159,6 +164,13 @@ export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
         }
       >
         <View>
+          <PhotoUploader
+            style={styles.photoUploader}
+            onPhotoUploding={onPhotoUploding}
+            onPhotoUploded={setImageUrl}
+            onPhotoUploadError={onPhotoUploadError}
+            url={imageUrl}
+          />
           <TextInput
             testID="titleInput"
             error={!!titleError}
@@ -290,6 +302,7 @@ export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
                   prepTimeInMinute,
                   instructions,
                   ingredients,
+                  imageUrl,
                 },
               });
 
@@ -333,5 +346,10 @@ const styles = StyleSheet.create({
   },
   timing: {
     flex: 1,
+  },
+  photoUploader: {
+    margin: 5,
+    width: viewWidth - 30,
+    height: viewHeight / 3,
   },
 });

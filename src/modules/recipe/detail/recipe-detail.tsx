@@ -109,6 +109,7 @@ export default function RecipeDetail({ route, navigation }: RecipeDetailProps) {
     image: {
       width,
       height: height / 3,
+      resizeMode: 'contain',
     },
     header: {
       flexDirection: 'row',

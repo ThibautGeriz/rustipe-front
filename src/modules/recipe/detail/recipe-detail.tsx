@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Image, Dimensions, View, RefreshControl } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Image,
+  View,
+  RefreshControl,
+  TouchableHighlight,
+} from 'react-native';
 import { Paragraph, Surface, Text, useTheme, Chip } from 'react-native-paper';
 import { useMediaQuery } from 'react-responsive';
 import { useQuery } from '@apollo/client';
@@ -7,8 +14,7 @@ import { useQuery } from '@apollo/client';
 import { GetRecipeData, GetRecipeVars, GET_RECIPE } from './recipe-detail-query';
 import type { RecipeDetailProps } from './screen';
 import type Recipe from '../models/recipe';
-
-const { width: viewWidth, height: viewHeight } = Dimensions.get('window');
+import useDimension from '../../hooks/useDimension';
 
 interface IngredientsProps {
   recipe: Recipe;
@@ -74,9 +80,10 @@ const Instructions = ({ recipe }: InstructionsProps) => (
   </>
 );
 
-export default function RecipeDetail({ route }: RecipeDetailProps) {
+export default function RecipeDetail({ route, navigation }: RecipeDetailProps) {
   const { id } = route.params;
   const { colors } = useTheme();
+  const { width, height } = useDimension();
   const isMobile = useMediaQuery({
     maxWidth: 500,
   });
@@ -100,8 +107,9 @@ export default function RecipeDetail({ route }: RecipeDetailProps) {
       flex: isMobile ? undefined : 3,
     },
     image: {
-      width: viewWidth,
-      height: viewHeight / 3,
+      width,
+      height: height / 3,
+      resizeMode: 'contain',
     },
     header: {
       flexDirection: 'row',
@@ -135,7 +143,13 @@ export default function RecipeDetail({ route }: RecipeDetailProps) {
         />
       }
     >
-      {recipe?.imageUrl ? <Image style={styles.image} source={{ uri: recipe.imageUrl }} /> : null}
+      {recipe?.imageUrl ? (
+        <TouchableHighlight
+          onPress={() => navigation.navigate('Image', { imageUrl: recipe.imageUrl! })}
+        >
+          <Image style={styles.image} source={{ uri: recipe.imageUrl }} />
+        </TouchableHighlight>
+      ) : null}
 
       <View style={styles.main}>
         <View style={styles.ingredientsContainer}>{recipe && <Ingredients recipe={recipe} />}</View>

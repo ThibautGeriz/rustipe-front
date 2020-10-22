@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Avatar, Card } from 'react-native-paper';
-import type Recipe from '../../models/recipe';
 
-const { width: viewWidth } = Dimensions.get('window');
+import useDimension from '../../../hooks/useDimension';
+import type Recipe from '../../models/recipe';
 
 export interface RecipeListItemProps {
   recipe: Recipe;
@@ -16,8 +16,13 @@ const SideContentFactory = (recipe: Recipe) => (props: any) =>
   ) : null;
 
 export default function SmallRecipeListItem({ recipe, onSelectRecipe }: RecipeListItemProps) {
+  const { width } = useDimension();
   return (
-    <Card testID={`Item-${recipe.id}`} style={styles.container} onPress={onSelectRecipe}>
+    <Card
+      testID={`Item-${recipe.id}`}
+      style={[styles.container, { width: width - 10 }]}
+      onPress={onSelectRecipe}
+    >
       <Card.Title
         title={recipe.title}
         subtitle={recipe.description}
@@ -32,7 +37,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5,
     marginTop: 5,
-    width: viewWidth - 10,
   },
   image: {
     marginRight: 5,

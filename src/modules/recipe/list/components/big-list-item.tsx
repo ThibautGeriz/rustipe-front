@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Card, Chip, useTheme } from 'react-native-paper';
-import type Recipe from '../../models/recipe';
 
-const { width: viewWidth } = Dimensions.get('window');
+import useDimension from '../../../hooks/useDimension';
+import type Recipe from '../../models/recipe';
 
 export interface RecipeListItemProps {
   recipe: Recipe;
@@ -12,8 +12,13 @@ export interface RecipeListItemProps {
 
 export default function BigRecipeListItem({ recipe, onSelectRecipe }: RecipeListItemProps) {
   const { colors } = useTheme();
+  const { width } = useDimension();
   return (
-    <Card testID={`Item-${recipe.id}`} style={styles.container} onPress={onSelectRecipe}>
+    <Card
+      testID={`Item-${recipe.id}`}
+      style={[styles.container, { width: (width - 10) / 3 - 10 }]}
+      onPress={onSelectRecipe}
+    >
       <Card.Cover source={{ uri: recipe.imageUrl }} />
       <Card.Title title={recipe.title} subtitle={recipe.description} />
       <Card.Content style={styles.cardContent}>
@@ -61,7 +66,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5,
     marginTop: 5,
-    width: (viewWidth - 10) / 3 - 10,
   },
   cardContent: {
     flexDirection: 'row',

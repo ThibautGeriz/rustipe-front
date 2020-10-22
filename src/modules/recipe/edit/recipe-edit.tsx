@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, RefreshControl, Dimensions } from 'react-native';
+import { StyleSheet, View, RefreshControl } from 'react-native';
 import {
   TextInput,
   Subheading,
@@ -18,10 +18,9 @@ import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../list/recipe
 import MultiInputText from '../components/multi-inputtext';
 import { GetRecipeData, GetRecipeVars, GET_RECIPE } from '../detail/recipe-detail-query';
 import type Recipe from '../models/recipe';
+import useDimension from '../../hooks/useDimension';
 
 import type { RecipeEditionProps } from './screen';
-
-const { width: viewWidth, height: viewHeight } = Dimensions.get('window');
 
 export const UPDATE_RECIPE = gql`
   mutation UpdateRecipe(
@@ -72,6 +71,7 @@ export const UPDATE_RECIPE = gql`
 
 export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
   const { id } = route.params;
+  const { width, height } = useDimension();
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState<string | undefined | null>(undefined);
   const [recipeYield, setRecipeYield] = React.useState<string | undefined | null>(undefined);
@@ -165,7 +165,7 @@ export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
       >
         <View>
           <PhotoUploader
-            style={styles.photoUploader}
+            style={[styles.photoUploader, { width: width - 30, height: height / 3 }]}
             onPhotoUploding={onPhotoUploding}
             onPhotoUploded={setImageUrl}
             onPhotoUploadError={onPhotoUploadError}
@@ -349,7 +349,5 @@ const styles = StyleSheet.create({
   },
   photoUploader: {
     margin: 5,
-    width: viewWidth - 30,
-    height: viewHeight / 3,
   },
 });

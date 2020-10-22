@@ -3,7 +3,6 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  Dimensions,
   View,
   RefreshControl,
   TouchableHighlight,
@@ -15,8 +14,7 @@ import { useQuery } from '@apollo/client';
 import { GetRecipeData, GetRecipeVars, GET_RECIPE } from './recipe-detail-query';
 import type { RecipeDetailProps } from './screen';
 import type Recipe from '../models/recipe';
-
-const { width: viewWidth, height: viewHeight } = Dimensions.get('window');
+import useDimension from '../../hooks/useDimension';
 
 interface IngredientsProps {
   recipe: Recipe;
@@ -85,6 +83,7 @@ const Instructions = ({ recipe }: InstructionsProps) => (
 export default function RecipeDetail({ route, navigation }: RecipeDetailProps) {
   const { id } = route.params;
   const { colors } = useTheme();
+  const { width, height } = useDimension();
   const isMobile = useMediaQuery({
     maxWidth: 500,
   });
@@ -108,8 +107,8 @@ export default function RecipeDetail({ route, navigation }: RecipeDetailProps) {
       flex: isMobile ? undefined : 3,
     },
     image: {
-      width: viewWidth,
-      height: viewHeight / 3,
+      width,
+      height: height / 3,
     },
     header: {
       flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   TextInput,
   Subheading,
@@ -16,10 +16,9 @@ import PhotoUploader from '../components/photo-uploader';
 import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
 import { GET_MY_RECIPES, GetMyRecipeData, GetMyRecipeVars } from '../list/recipe-list-query';
 import MultiInputText from '../components/multi-inputtext';
+import useDimension from '../../hooks/useDimension';
 
 import type { RecipeCreationProps } from './screen';
-
-const { width: viewWidth, height: viewHeight } = Dimensions.get('window');
 
 export const ADD_RECIPE = gql`
   mutation CreateRecipe(
@@ -56,6 +55,7 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
   const [title, setTitle] = React.useState('');
   const [instructions, setInstructions] = React.useState<string[]>([]);
   const [ingredients, setIngredients] = React.useState<string[]>([]);
+  const { width, height } = useDimension();
 
   const [visible, setVisible] = React.useState(false);
   const [titleError, setTitleError] = React.useState<string>('');
@@ -90,7 +90,7 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
     <View style={styles.container}>
       <KeyboardAwareScrollView>
         <PhotoUploader
-          style={styles.photoUploader}
+          style={[styles.photoUploader, { width: width - 30, height: height / 3 }]}
           onPhotoUploding={onPhotoUploding}
           onPhotoUploded={setImageUrl}
           onPhotoUploadError={onPhotoUploadError}
@@ -181,7 +181,5 @@ const styles = StyleSheet.create({
   },
   photoUploader: {
     margin: 5,
-    width: viewWidth - 30,
-    height: viewHeight / 3,
   },
 });

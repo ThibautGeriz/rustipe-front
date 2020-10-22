@@ -9,6 +9,7 @@ import '@expo/match-media';
 
 import RecipesList from './src/modules/recipe/list';
 import RecipesDetail from './src/modules/recipe/detail';
+import ImageDetail from './src/modules/recipe/image';
 import RecipesCreate from './src/modules/recipe/create';
 import RecipesEdit from './src/modules/recipe/edit';
 import UserSignup from './src/modules/user/signup';
@@ -20,6 +21,7 @@ import { navigationRef } from './src/rootNavigation';
 export type RootStackParamList = {
   Recipes: {};
   Recipe: { id: string };
+  Image: { imageUrl: string };
   RecipeEdition: { id: string };
   RecipeCreation: {};
   Signup: {};
@@ -36,6 +38,7 @@ const linking = {
       Recipe: 'recipes/:id',
       RecipeEdition: 'recipes/:id/edit',
       RecipeCreation: 'recipes/create',
+      Image: 'image/:imageUrl',
       Signup: 'signup',
       Signin: 'signin',
     },
@@ -68,6 +71,7 @@ export default function App() {
             <Stack.Screen name="RecipeCreation" component={RecipesCreate} />
             <Stack.Screen name="RecipeEdition" component={RecipesEdit} />
             <Stack.Screen name="Signin" component={UserSignin} />
+            <Stack.Screen name="Image" component={ImageDetail} />
           </Stack.Navigator>
         </NavigationContainer>
       </ApolloProvider>

@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Image, Dimensions, View, RefreshControl } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Image,
+  Dimensions,
+  View,
+  RefreshControl,
+  TouchableHighlight,
+} from 'react-native';
 import { Paragraph, Surface, Text, useTheme, Chip } from 'react-native-paper';
 import { useMediaQuery } from 'react-responsive';
 import { useQuery } from '@apollo/client';
@@ -74,7 +82,7 @@ const Instructions = ({ recipe }: InstructionsProps) => (
   </>
 );
 
-export default function RecipeDetail({ route }: RecipeDetailProps) {
+export default function RecipeDetail({ route, navigation }: RecipeDetailProps) {
   const { id } = route.params;
   const { colors } = useTheme();
   const isMobile = useMediaQuery({
@@ -135,7 +143,13 @@ export default function RecipeDetail({ route }: RecipeDetailProps) {
         />
       }
     >
-      {recipe?.imageUrl ? <Image style={styles.image} source={{ uri: recipe.imageUrl }} /> : null}
+      {recipe?.imageUrl ? (
+        <TouchableHighlight
+          onPress={() => navigation.navigate('Image', { imageUrl: recipe.imageUrl! })}
+        >
+          <Image style={styles.image} source={{ uri: recipe.imageUrl }} />
+        </TouchableHighlight>
+      ) : null}
 
       <View style={styles.main}>
         <View style={styles.ingredientsContainer}>{recipe && <Ingredients recipe={recipe} />}</View>

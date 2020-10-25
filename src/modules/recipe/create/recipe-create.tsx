@@ -75,13 +75,10 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
         query: GET_MY_RECIPES,
         variables: { query: null },
       });
-      if (!cacheContent) {
-        return;
-      }
       cache.writeQuery({
         query: GET_MY_RECIPES,
         variables: { query: null },
-        data: { getMyRecipes: cacheContent.getMyRecipes.concat([data.createRecipe]) },
+        data: { getMyRecipes: (cacheContent?.getMyRecipes ?? []).concat([data.createRecipe]) },
       });
     },
   });

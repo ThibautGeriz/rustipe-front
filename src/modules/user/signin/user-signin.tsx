@@ -56,6 +56,7 @@ export default function UserSignin({ navigation }: UserSigninProps) {
           error={!!emailError}
           keyboardType="email-address"
           autoCompleteType="email"
+          autoCapitalize="none"
           textContentType="username"
           value={email}
           onChangeText={(text) => setEmail(text)}
@@ -69,6 +70,7 @@ export default function UserSignin({ navigation }: UserSigninProps) {
           label="Password"
           error={!!passwordError}
           secureTextEntry
+          autoCapitalize="none"
           textContentType="password"
           autoCompleteType="password"
           value={password}

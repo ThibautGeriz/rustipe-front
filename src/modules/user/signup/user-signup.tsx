@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableHighlight } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import jwtDecode from 'jwt-decode';
 import {
   TextInput,
   Title,
@@ -15,7 +16,7 @@ import {
 import { gql, useMutation } from '@apollo/client';
 
 import { KeyboardAwareScrollView } from '../../components/react-native-keyboard-aware-scroll-view';
-import { AUTH_TOKEN_NAME } from '../constants';
+import { AUTH_TOKEN_NAME, USER_ID_NAME } from '../constants';
 
 import type { UserSignupProps } from './screen';
 
@@ -25,7 +26,8 @@ export const SIGNUP = gql`
   }
 `;
 
-export default function UserSignup({ navigation }: UserSignupProps) {
+export default function UserSignup({ navigation, route }: UserSignupProps) {
+  const { redirect } = route.params;
   const { colors } = useTheme();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState<string>('');
@@ -103,8 +105,15 @@ export default function UserSignup({ navigation }: UserSignupProps) {
               if (!token) {
                 return;
               }
-              await AsyncStorage.setItem(AUTH_TOKEN_NAME, token.data.signup);
-              navigation.navigate('Recipes', {});
+              const jwtToken = token.data.signup;
+              try {
+                const { sub: userId } = jwtDecode(jwtToken);
+                await AsyncStorage.setItem(USER_ID_NAME, userId);
+              } catch (err) {
+                // do nothing
+              }
+              await AsyncStorage.setItem(AUTH_TOKEN_NAME, jwtToken);
+              navigation.navigate(redirect?.route ?? 'Recipes', redirect?.params ?? {});
             }}
           >
             Sign up
@@ -112,7 +121,7 @@ export default function UserSignup({ navigation }: UserSignupProps) {
         )}
         {!loading || <ActivityIndicator animating data-testid="ActivityIndicator" />}
         <View style={styles.links}>
-          <TouchableHighlight onPress={() => navigation.navigate('Signin', {})}>
+          <TouchableHighlight onPress={() => navigation.navigate('Signin', { redirect })}>
             <Text style={styles.link}>You already have a account? Login</Text>
           </TouchableHighlight>
         </View>

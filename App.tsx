@@ -24,8 +24,13 @@ export type RootStackParamList = {
   Image: { imageUrl: string };
   RecipeEdition: { id: string };
   RecipeCreation: {};
-  Signup: {};
-  Signin: {};
+  Signup: { redirect: Redirect | undefined | null };
+  Signin: { redirect: Redirect | undefined | null };
+};
+
+export type Redirect = {
+  route: 'Recipes' | 'Recipe' | 'Image' | 'RecipeEdition' | 'RecipeCreation' | 'Signup' | 'Signin';
+  params: { [key: string]: any };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

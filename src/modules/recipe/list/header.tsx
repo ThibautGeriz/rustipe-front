@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Appbar } from 'react-native-paper';
 import { useApolloClient } from '@apollo/client';
 
-import { AUTH_TOKEN_NAME } from '../../user/constants';
+import { AUTH_TOKEN_NAME, USER_ID_NAME } from '../../user/constants';
 import type { RecipeListProps } from './screen';
 
 const Header = ({ navigation }: RecipeListProps) => {
@@ -16,8 +16,9 @@ const Header = ({ navigation }: RecipeListProps) => {
         testID="logout"
         onPress={async () => {
           await AsyncStorage.removeItem(AUTH_TOKEN_NAME);
+          await AsyncStorage.removeItem(USER_ID_NAME);
           await client.clearStore();
-          navigation.navigate('Signin', {});
+          navigation.navigate('Signin', { redirect: null });
         }}
       />
     </Appbar.Header>

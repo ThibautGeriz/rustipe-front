@@ -7,8 +7,8 @@ import RecipeDetail from './recipe-detail';
 import Header from './header';
 import type { RootStackParamList } from '../../../../App';
 
-type RecipeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Recipe'>;
-type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Recipe'>;
+export type RecipeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Recipe'>;
+export type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Recipe'>;
 
 export interface RecipeDetailProps {
   navigation: RecipeDetailScreenNavigationProp;

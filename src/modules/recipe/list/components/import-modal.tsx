@@ -68,13 +68,12 @@ const ImportModal = ({ visible, onDismiss }: RecipeImportModalProps) => {
         query: GET_MY_RECIPES,
         variables: { query: null },
       });
-      if (!cacheContent) {
-        return;
-      }
       cache.writeQuery({
         query: GET_MY_RECIPES,
         variables: { query: null },
-        data: { getMyRecipes: cacheContent.getMyRecipes.concat([data.importRecipe]) },
+        data: {
+          getMyRecipes: (cacheContent?.getMyRecipes ?? []).concat([data.importRecipe]),
+        },
       });
     },
   });

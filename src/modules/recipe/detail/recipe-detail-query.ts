@@ -13,6 +13,7 @@ export const GET_RECIPE = gql`
   query($id: String!) {
     getRecipe(id: $id) {
       id
+      userId
       title
       description
       imageUrl

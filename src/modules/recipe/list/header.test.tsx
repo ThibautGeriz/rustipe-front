@@ -49,7 +49,7 @@ describe('Header Recipe List Item', () => {
 
     it('should go to the login page', () => {
       // then
-      expect(navigate).toHaveBeenCalledWith('Signin', {});
+      expect(navigate).toHaveBeenCalledWith('Signin', { redirect: null });
     });
   });
 });

@@ -5,8 +5,10 @@ import { RouteProp } from '@react-navigation/native';
 import { MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-native/extend-expect';
 import { render, fireEvent, RenderAPI } from 'react-native-testing-library';
+import AsyncStorage from '@react-native-community/async-storage';
+import { USER_ID_NAME } from '../../user/constants';
 
-import Header, { DELETE_RECIPE } from './header';
+import Header, { DELETE_RECIPE, COPY_RECIPE } from './header';
 import { GET_RECIPE } from './recipe-detail-query';
 
 import type { RootStackParamList } from '../../../../App';
@@ -30,6 +32,7 @@ describe('Header', () => {
   } as RouteProp<RootStackParamList, 'Recipe'>;
 
   const deleteRecipe = jest.fn();
+  const copyRecipe = jest.fn();
   const mocks = [
     {
       request: {
@@ -37,6 +40,13 @@ describe('Header', () => {
         variables: { id: recipe.id },
       },
       result: deleteRecipe,
+    },
+    {
+      request: {
+        query: COPY_RECIPE,
+        variables: { recipeId: recipe.id },
+      },
+      result: copyRecipe,
     },
     {
       request: {
@@ -51,101 +61,179 @@ describe('Header', () => {
     },
   ];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     navigate.mockReset();
     goBack.mockReset();
     shareMock.mockReset();
     deleteRecipe.mockReset();
     deleteRecipe.mockReturnValue({ data: { deleteRecipe: recipe.id } });
+    copyRecipe.mockReset();
+    copyRecipe.mockReturnValue({ data: { copyRecipe: recipe } });
+    await AsyncStorage.setItem(USER_ID_NAME, recipe.userId);
   });
 
-  const getHeader = (props?: any): RenderAPI =>
-    render(
+  const getHeader = async (props?: any): Promise<RenderAPI> => {
+    const c = render(
       <MockedProvider mocks={mocks} addTypename={false}>
         <Header navigation={navigation} route={route} {...props} />
       </MockedProvider>,
     );
+    await wait();
+    return c;
+  };
 
-  describe('by default', () => {
+  describe("when it's the user's recipe", () => {
     it('contain the title', async () => {
       // when
-      const result = getHeader();
-      await wait();
+      const result = await getHeader();
 
       // then
       expect(result.getByA11yRole('header')).toHaveTextContent('Lemon pie');
     });
-  });
 
-  describe('when pressing back', () => {
-    let elem: RenderAPI;
-    beforeEach(async () => {
-      // given
-      elem = getHeader();
-      await wait();
-
+    it('have no add button', async () => {
       // when
-      fireEvent.press(elem.getByTestId('BackAction'));
+      const result = await getHeader();
+
+      // then
+      expect(result.queryByTestId('AddButton')).toBeFalsy();
     });
 
-    it('should go back', () => {
-      // then
-      expect(goBack).toHaveBeenCalled();
+    describe('when pressing back', () => {
+      let elem: RenderAPI;
+      beforeEach(async () => {
+        // given
+        elem = await getHeader();
+        wait();
+
+        // when
+        fireEvent.press(elem.getByTestId('BackAction'));
+      });
+
+      it('should go back', () => {
+        // then
+        expect(navigate).toHaveBeenCalledWith('Recipes', {});
+      });
+    });
+
+    describe('when pressing sharing', () => {
+      let elem: RenderAPI;
+      beforeEach(async () => {
+        // given
+        elem = await getHeader();
+        wait();
+
+        // when
+        fireEvent.press(elem.getByTestId('ShareButton'));
+      });
+
+      it('should share the recipe', () => {
+        // then
+        expect(shareMock).toHaveBeenCalled();
+      });
+    });
+
+    describe('when pressing delete', () => {
+      let elem: RenderAPI;
+      beforeEach(async () => {
+        // given
+        elem = await getHeader();
+        wait();
+
+        // when
+        fireEvent.press(elem.getByTestId('DeleteButton'));
+        await wait();
+      });
+
+      it('should delete the recipe', async () => {
+        // then
+        expect(deleteRecipe).toHaveBeenCalled();
+      });
+    });
+
+    describe('when pressing edit', () => {
+      let elem: RenderAPI;
+      beforeEach(async () => {
+        // given
+        elem = await getHeader();
+        wait();
+
+        // when
+        fireEvent.press(elem.getByTestId('EditButton'));
+        await wait();
+      });
+
+      it('should go on the edit page', async () => {
+        // then
+        expect(navigate).toHaveBeenCalledWith('RecipeEdition', { id: recipe.id });
+      });
     });
   });
 
-  describe('when pressing sharing', () => {
-    let elem: RenderAPI;
+  describe("when it's not the user's recipe", () => {
     beforeEach(async () => {
-      // given
-      elem = getHeader();
-      await wait();
-
+      await AsyncStorage.setItem(USER_ID_NAME, 'some-other-id');
+    });
+    it('have an add button', async () => {
       // when
-      fireEvent.press(elem.getByTestId('ShareButton'));
+      const result = await getHeader();
+
+      // then
+      expect(result.queryByTestId('AddButton')).toBeTruthy();
     });
 
-    it('should share the recipe', () => {
-      // then
-      expect(shareMock).toHaveBeenCalled();
+    describe('when pressing add', () => {
+      let elem: RenderAPI;
+      beforeEach(async () => {
+        // given
+        elem = await getHeader();
+
+        // when
+        fireEvent.press(elem.getByTestId('AddButton'));
+        await wait();
+      });
+
+      it('should copy the recipe to your own playbook', async () => {
+        // then
+        expect(copyRecipe).toHaveBeenCalled();
+      });
     });
   });
 
-  describe('when pressing delete', () => {
-    let elem: RenderAPI;
+  describe('when the user is not logged', () => {
     beforeEach(async () => {
-      // given
-      elem = getHeader();
-      await wait();
-
-      // when
-      fireEvent.press(elem.getByTestId('DeleteButton'));
-      await wait();
+      await AsyncStorage.removeItem(USER_ID_NAME);
     });
 
-    it('should delete the recipe', async () => {
+    it('have an add button', async () => {
+      // when
+      const result = await getHeader();
+
       // then
-      expect(deleteRecipe).toHaveBeenCalled();
+      expect(result.queryByTestId('AddButton')).toBeTruthy();
+    });
+
+    describe('when pressing add', () => {
+      let elem: RenderAPI;
+      beforeEach(async () => {
+        // given
+        elem = await getHeader();
+
+        // when
+        fireEvent.press(elem.getByTestId('AddButton'));
+        await wait();
+      });
+
+      it('should go on the login page', async () => {
+        // then
+        expect(navigate).toHaveBeenCalledWith('Signup', {
+          redirect: { route: 'Recipe', params: { id: recipe.id } },
+        });
+      });
     });
   });
 
-  describe('when pressing edit', () => {
-    let elem: RenderAPI;
-    beforeEach(async () => {
-      // given
-      elem = getHeader();
-      await wait();
-
-      // when
-      fireEvent.press(elem.getByTestId('EditButton'));
-      await wait();
-    });
-
-    it('should go on the edit page', async () => {
-      // then
-      expect(navigate).toHaveBeenCalledWith('RecipeEdition', { id: recipe.id });
-    });
-  });
+  afterEach(() => AsyncStorage.clear());
 });
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 0));

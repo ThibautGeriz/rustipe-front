@@ -6,6 +6,7 @@ function recipe(): Recipe {
   return {
     id: uuidv4(),
     title: 'Lemon pie',
+    userId: 'user-id-24',
     instructions: [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer. 1',
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies facilisis ultrices. Cras eget risus at urna rhoncus pharetra. Integer. 2',

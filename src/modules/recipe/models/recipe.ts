@@ -1,5 +1,6 @@
 export default interface Recipe {
   id: string;
+  userId: string;
   title: string;
   instructions: string[];
   ingredients: string[];

@@ -3,7 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import { onError, ErrorResponse } from '@apollo/client/link/error';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { AUTH_TOKEN_NAME } from '../modules/user/constants';
+import { AUTH_TOKEN_NAME, USER_ID_NAME } from '../modules/user/constants';
 import { navigate } from '../rootNavigation';
 
 let uri = 'https://rustipe.herokuapp.com/graphql';
@@ -27,9 +27,14 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const resetAuth = onError(({ graphQLErrors }: ErrorResponse) => {
-  if (graphQLErrors && graphQLErrors[0] && graphQLErrors[0].message === 'User must logged') {
+  if (
+    graphQLErrors &&
+    graphQLErrors[0] &&
+    ['User must logged', 'User not found'].includes(graphQLErrors[0].message)
+  ) {
     AsyncStorage.removeItem(AUTH_TOKEN_NAME);
-    navigate('Signin', {});
+    AsyncStorage.removeItem(USER_ID_NAME);
+    navigate('Signin', { redirect: null });
   }
 });
 

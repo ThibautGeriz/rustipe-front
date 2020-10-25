@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Share, Platform } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { GetRecipeData, GetRecipeVars, GET_RECIPE } from './recipe-detail-query';
@@ -12,6 +13,8 @@ export const DELETE_RECIPE = gql`
     deleteRecipe(id: $id)
   }
 `;
+
+const isWeb = Platform.OS === 'web';
 
 const Header = ({ navigation, route }: RecipeDetailProps) => {
   const { id } = route.params;
@@ -37,10 +40,29 @@ const Header = ({ navigation, route }: RecipeDetailProps) => {
       });
     },
   });
+  const shareButton = isWeb ? null : (
+    <Appbar.Action
+      testID="ShareButton"
+      color="white"
+      icon="share"
+      onPress={() => {
+        if (recipe == null) {
+          return;
+        }
+        Share.share({
+          message: `Check out the recipe: ${recipe.title} from Dish out:
+
+https://loving-kowalevski-577e95.netlify.app/recipes/${recipe.id}`,
+          title: 'Dish out',
+        });
+      }}
+    />
+  );
   return (
     <Appbar.Header>
       <Appbar.BackAction testID="BackAction" onPress={navigation.goBack} />
       <Appbar.Content title={recipe?.title} />
+      {shareButton}
       <Appbar.Action
         testID="EditButton"
         color="white"

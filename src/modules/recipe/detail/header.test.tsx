@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Share } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-native/extend-expect';
@@ -15,6 +16,8 @@ import fakeRecipe from '../__data__/fake_recipe';
 describe('Header', () => {
   const navigate = jest.fn();
   const goBack = jest.fn();
+  const shareMock = jest.spyOn(Share, 'share');
+  shareMock.mockImplementation();
 
   type NavType = StackNavigationProp<RootStackParamList, 'Recipes'>;
   const navigation = ({ navigate, goBack } as unknown) as NavType;
@@ -51,6 +54,7 @@ describe('Header', () => {
   beforeEach(() => {
     navigate.mockReset();
     goBack.mockReset();
+    shareMock.mockReset();
     deleteRecipe.mockReset();
     deleteRecipe.mockReturnValue({ data: { deleteRecipe: recipe.id } });
   });
@@ -87,6 +91,23 @@ describe('Header', () => {
     it('should go back', () => {
       // then
       expect(goBack).toHaveBeenCalled();
+    });
+  });
+
+  describe('when pressing sharing', () => {
+    let elem: RenderAPI;
+    beforeEach(async () => {
+      // given
+      elem = getHeader();
+      await wait();
+
+      // when
+      fireEvent.press(elem.getByTestId('ShareButton'));
+    });
+
+    it('should share the recipe', () => {
+      // then
+      expect(shareMock).toHaveBeenCalled();
     });
   });
 

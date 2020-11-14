@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Title, Button } from 'react-native-paper';
+import { Text, Title, Button, useTheme } from 'react-native-paper';
 
 import ImportModalVisible from './import-modal';
 import type { RecipeListProps } from '../screen';
 
 export default function NoRecipe({ navigation }: RecipeListProps) {
+  const { colors } = useTheme();
   const [isImportModalVisible, setImportModalVisible] = React.useState(false);
   const onImportModalVisibilityToggle = () => setImportModalVisible(!isImportModalVisible);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Title style={styles.title}>Hi there,</Title>
       <Text style={styles.text}>Look like, you do not have any recipes just yet.</Text>
       <Text style={styles.text}>

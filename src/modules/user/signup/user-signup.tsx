@@ -27,7 +27,7 @@ export const SIGNUP = gql`
 `;
 
 export default function UserSignup({ navigation, route }: UserSignupProps) {
-  const { redirect } = route.params;
+  const { redirect } = route.params ?? {};
   const { colors } = useTheme();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState<string>('');
@@ -45,7 +45,7 @@ export default function UserSignup({ navigation, route }: UserSignupProps) {
   const [passwordError, setPasswordError] = React.useState<string>('');
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { backgroundColor: colors.primary }]}>
         <Title style={styles.title}>Rustipe</Title>
         <Subheading style={styles.subtitle}>All your recipes in one place</Subheading>

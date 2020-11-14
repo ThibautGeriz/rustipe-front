@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 import useDimension from '../../hooks/useDimension';
 import type { ImageDetailProps } from './screen';
@@ -8,6 +9,7 @@ const HEADER_HEIGHT: number = 30;
 
 export default function RecipeDetail({ route }: ImageDetailProps) {
   const { imageUrl } = route.params;
+  const { colors } = useTheme();
   const [ratio, setRatio] = useState(16 / 9);
   const { width, height } = useDimension();
 
@@ -27,6 +29,14 @@ export default function RecipeDetail({ route }: ImageDetailProps) {
     imageHeight = contentHeight;
     imageWidth = imageHeight * ratio;
   }
+
+  const styles = StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.background,
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -53,10 +63,3 @@ async function getImageRatio(imageUrl: string): Promise<number> {
     );
   });
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

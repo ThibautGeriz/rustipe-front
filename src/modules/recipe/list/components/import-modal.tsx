@@ -7,6 +7,7 @@ import {
   Button,
   ActivityIndicator,
   HelperText,
+  useTheme,
 } from 'react-native-paper';
 import { gql, useMutation } from '@apollo/client';
 
@@ -37,6 +38,7 @@ export interface RecipeImportModalProps {
 }
 
 const ImportModal = ({ visible, onDismiss }: RecipeImportModalProps) => {
+  const { colors } = useTheme();
   const [text, setText] = React.useState('');
   const textInput = React.useRef<NativeTextInput | null>(null);
 
@@ -80,7 +82,11 @@ const ImportModal = ({ visible, onDismiss }: RecipeImportModalProps) => {
 
   return (
     <Portal>
-      <Modal contentContainerStyle={styles.modal} visible={visible} onDismiss={onDismiss}>
+      <Modal
+        contentContainerStyle={[styles.modal, { backgroundColor: colors.background }]}
+        visible={visible}
+        onDismiss={onDismiss}
+      >
         <View>
           <TextInput
             placeholder="https://..."

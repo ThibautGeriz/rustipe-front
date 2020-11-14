@@ -27,7 +27,7 @@ export const SIGNIN = gql`
 `;
 
 export default function UserSignin({ navigation, route }: UserSigninProps) {
-  const { redirect } = route.params;
+  const { redirect } = route.params ?? {};
   const { colors } = useTheme();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState<string>('');

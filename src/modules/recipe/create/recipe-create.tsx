@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Snackbar,
   HelperText,
+  useTheme,
 } from 'react-native-paper';
 import { gql, useMutation } from '@apollo/client';
 
@@ -52,6 +53,7 @@ export const ADD_RECIPE = gql`
 `;
 
 export default function RecipeCreate({ navigation }: RecipeCreationProps) {
+  const { colors } = useTheme();
   const [title, setTitle] = React.useState('');
   const [instructions, setInstructions] = React.useState<string[]>([]);
   const [ingredients, setIngredients] = React.useState<string[]>([]);
@@ -84,7 +86,7 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
   });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <KeyboardAwareScrollView>
         <PhotoUploader
           style={[styles.photoUploader, { width: width - 30, height: height / 3 }]}
@@ -161,7 +163,7 @@ export default function RecipeCreate({ navigation }: RecipeCreationProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    padding: 10,
   },
   ingredients: {
     padding: 10,

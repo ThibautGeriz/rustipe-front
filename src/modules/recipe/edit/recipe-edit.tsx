@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Snackbar,
   HelperText,
+  useTheme,
 } from 'react-native-paper';
 import { gql, useMutation, useQuery } from '@apollo/client';
 
@@ -71,6 +72,7 @@ export const UPDATE_RECIPE = gql`
 
 export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
   const { id } = route.params;
+  const { colors } = useTheme();
   const { width, height } = useDimension();
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState<string | undefined | null>(undefined);
@@ -150,7 +152,7 @@ export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <KeyboardAwareScrollView
         refreshControl={
           <RefreshControl
@@ -324,7 +326,7 @@ export default function RecipeEdit({ navigation, route }: RecipeEditionProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    padding: 10,
   },
   ingredients: {
     padding: 10,

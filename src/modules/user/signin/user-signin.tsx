@@ -45,7 +45,7 @@ export default function UserSignin({ navigation, route }: UserSigninProps) {
   const [passwordError, setPasswordError] = React.useState<string>('');
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { backgroundColor: colors.primary }]}>
         <Title style={styles.title}>Rustipe</Title>
         <Subheading style={styles.subtitle}>All your recipes in one place</Subheading>

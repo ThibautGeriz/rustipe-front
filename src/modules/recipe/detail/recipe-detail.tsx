@@ -90,6 +90,10 @@ export default function RecipeDetail({ route, navigation }: RecipeDetailProps) {
 
   const styles = StyleSheet.create({
     container: {
+      backgroundColor: colors.background,
+      flex: 1,
+    },
+    contentContainerStyle: {
       alignItems: 'center',
     },
     main: {
@@ -130,37 +134,41 @@ export default function RecipeDetail({ route, navigation }: RecipeDetailProps) {
   const recipe = data?.getRecipe;
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      refreshControl={
-        <RefreshControl
-          refreshing={loading}
-          onRefresh={() => {
-            refetch({
-              id,
-            });
-          }}
-        />
-      }
-    >
-      {recipe?.imageUrl ? (
-        <TouchableHighlight
-          onPress={() => navigation.navigate('Image', { imageUrl: recipe.imageUrl! })}
-        >
-          <Image style={styles.image} source={{ uri: recipe.imageUrl }} />
-        </TouchableHighlight>
-      ) : null}
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.contentContainerStyle}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => {
+              refetch({
+                id,
+              });
+            }}
+          />
+        }
+      >
+        {recipe?.imageUrl ? (
+          <TouchableHighlight
+            onPress={() => navigation.navigate('Image', { imageUrl: recipe.imageUrl! })}
+          >
+            <Image style={styles.image} source={{ uri: recipe.imageUrl }} />
+          </TouchableHighlight>
+        ) : null}
 
-      <View style={styles.main}>
-        <View style={styles.ingredientsContainer}>{recipe && <Ingredients recipe={recipe} />}</View>
-        <View style={styles.instructionsContainer}>
-          {recipe && recipe.description && (
-            <Paragraph style={styles.description}>{recipe.description}</Paragraph>
-          )}
-          {recipe && <Instructions recipe={recipe} />}
+        <View style={styles.main}>
+          <View style={styles.ingredientsContainer}>
+            {recipe && <Ingredients recipe={recipe} />}
+          </View>
+          <View style={styles.instructionsContainer}>
+            {recipe && recipe.description && (
+              <Paragraph style={styles.description}>{recipe.description}</Paragraph>
+            )}
+            {recipe && <Instructions recipe={recipe} />}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 

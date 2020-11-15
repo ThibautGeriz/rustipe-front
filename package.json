@@ -10,12 +10,14 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "check-type": "tsc --noEmit --project ./tsconfig.json",
+    "type:check": "tsc --noEmit --project ./tsconfig.json",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook -c .storybook -o .out",
     "build:web": "expo build:web",
-    "lint": "eslint src --ext .js,.ts,.tsx",
-    "prettier": "prettier -l './src/**/*.*'"
+    "lint:check": "eslint src --ext .js,.ts,.tsx",
+    "lint": "eslint src --ext .js,.ts,.tsx --fix",
+    "format": "prettier -w './src/**/*.*'",
+    "format:check": "prettier -l './src/**/*.*'"
   },
   "dependencies": {
     "@apollo/client": "3.2.2",

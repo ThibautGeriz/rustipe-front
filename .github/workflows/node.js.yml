@@ -16,9 +16,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn check-type
-      - run: yarn lint
-      - run: yarn prettier
+      - run: yarn type:check
+      - run: yarn lint:check
+      - run: yarn format:check
       - run: yarn test --coverage true
         env:
           CI: true

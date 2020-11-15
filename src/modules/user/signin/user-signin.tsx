@@ -34,12 +34,18 @@ export default function UserSignin({ navigation, route }: UserSigninProps) {
 
   const [visible, setVisible] = React.useState(false);
   const onDismissSnackBar = () => setVisible(false);
-  const onError = () => {
+  const onError = (err: Error) => {
     setVisible(true);
+    setPasswordError(err.message);
+  };
+  const onCompleted = () => {
+    setVisible(false);
+    setPasswordError('');
   };
 
   const [signin, { loading, error: mutationError }] = useMutation(SIGNIN, {
     onError,
+    onCompleted,
   });
   const [emailError, setEmailError] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<string>('');
@@ -61,7 +67,10 @@ export default function UserSignin({ navigation, route }: UserSigninProps) {
           autoCapitalize="none"
           textContentType="username"
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={(text) => {
+            setEmail(text);
+            setEmailError('');
+          }}
         />
         <HelperText type="error" visible={!!emailError}>
           {emailError}
@@ -76,7 +85,10 @@ export default function UserSignin({ navigation, route }: UserSigninProps) {
           textContentType="password"
           autoCompleteType="password"
           value={password}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={(text) => {
+            setPassword(text);
+            setPasswordError('');
+          }}
         />
         <HelperText type="error" visible={!!passwordError}>
           {passwordError}
@@ -126,8 +138,15 @@ export default function UserSignin({ navigation, route }: UserSigninProps) {
           </TouchableHighlight>
         </View>
       </KeyboardAwareScrollView>
-      <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
-        {mutationError && mutationError.message ? mutationError.message : undefined}
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: 'Ok',
+          onPress: onDismissSnackBar,
+        }}
+      >
+        {mutationError?.message}
       </Snackbar>
     </View>
   );

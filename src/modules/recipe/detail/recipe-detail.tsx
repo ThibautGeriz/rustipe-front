@@ -7,15 +7,7 @@ import {
   RefreshControl,
   TouchableHighlight,
 } from 'react-native';
-import {
-  Paragraph,
-  Surface,
-  Text,
-  useTheme,
-  Chip,
-  ActivityIndicator,
-  Title,
-} from 'react-native-paper';
+import { Paragraph, Surface, Text, useTheme, Chip, ActivityIndicator } from 'react-native-paper';
 import { useMediaQuery } from 'react-responsive';
 import { useQuery } from '@apollo/client';
 
@@ -23,6 +15,7 @@ import { GetRecipeData, GetRecipeVars, GET_RECIPE } from './recipe-detail-query'
 import type { RecipeDetailProps } from './screen';
 import type Recipe from '../models/recipe';
 import useDimension from '../../hooks/useDimension';
+import Error from '../../components/error';
 
 export default function RecipeDetailContainer({ route, navigation }: RecipeDetailProps) {
   const { id } = route.params;
@@ -44,7 +37,7 @@ export default function RecipeDetailContainer({ route, navigation }: RecipeDetai
 
   let content = <ActivityIndicator style={defaultStyles.loader} />;
   if (error != null) {
-    content = <RecipeDetailError message={error.message} />;
+    content = <Error message={error.message} />;
   } else if (!loading && recipe != null) {
     content = <RecipeDetail route={route} navigation={navigation} recipe={recipe} />;
   }
@@ -65,14 +58,6 @@ export default function RecipeDetailContainer({ route, navigation }: RecipeDetai
       >
         {content}
       </ScrollView>
-    </View>
-  );
-}
-function RecipeDetailError({ message }: Readonly<{ message: string }>) {
-  return (
-    <View style={defaultStyles.errorContainer}>
-      <Title style={defaultStyles.errorTitle}>{message}</Title>
-      <Text>Oups, Something did not go as planned.</Text>
     </View>
   );
 }
@@ -193,15 +178,6 @@ const Instructions = ({ recipe }: Readonly<{ recipe: Recipe }>) => (
 );
 
 const defaultStyles = StyleSheet.create({
-  errorContainer: {
-    padding: 60,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  errorTitle: {
-    marginBottom: 20,
-  },
   loader: {
     padding: 60,
   },

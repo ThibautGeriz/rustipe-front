@@ -7,7 +7,15 @@ import {
   RefreshControl,
   TouchableHighlight,
 } from 'react-native';
-import { Paragraph, Surface, Text, useTheme, Chip } from 'react-native-paper';
+import {
+  Paragraph,
+  Surface,
+  Text,
+  useTheme,
+  Chip,
+  ActivityIndicator,
+  Title,
+} from 'react-native-paper';
 import { useMediaQuery } from 'react-responsive';
 import { useQuery } from '@apollo/client';
 
@@ -16,11 +24,119 @@ import type { RecipeDetailProps } from './screen';
 import type Recipe from '../models/recipe';
 import useDimension from '../../hooks/useDimension';
 
-interface IngredientsProps {
-  recipe: Recipe;
+export default function RecipeDetailContainer({ route, navigation }: RecipeDetailProps) {
+  const { id } = route.params;
+  const { colors } = useTheme();
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: colors.background,
+      flex: 1,
+    },
+    contentContainerStyle: {
+      alignItems: 'center',
+    },
+  });
+
+  const { loading, data, refetch, error } = useQuery<GetRecipeData, GetRecipeVars>(GET_RECIPE, {
+    variables: { id },
+  });
+  const recipe = data?.getRecipe;
+
+  let content = <ActivityIndicator style={defaultStyles.loader} />;
+  if (error != null) {
+    content = <RecipeDetailError message={error.message} />;
+  } else if (!loading && recipe != null) {
+    content = <RecipeDetail route={route} navigation={navigation} recipe={recipe} />;
+  }
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.contentContainerStyle}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => {
+              refetch({
+                id,
+              });
+            }}
+          />
+        }
+      >
+        {content}
+      </ScrollView>
+    </View>
+  );
+}
+function RecipeDetailError({ message }: Readonly<{ message: string }>) {
+  return (
+    <View style={defaultStyles.errorContainer}>
+      <Title style={defaultStyles.errorTitle}>{message}</Title>
+      <Text>Oups, Something did not go as planned.</Text>
+    </View>
+  );
 }
 
-const Ingredients = ({ recipe }: IngredientsProps) => (
+function RecipeDetail({ recipe, navigation }: RecipeDetailProps & Readonly<{ recipe: Recipe }>) {
+  const { colors } = useTheme();
+  const { width, height } = useDimension();
+  const isMobile = useMediaQuery({
+    maxWidth: 500,
+  });
+
+  const styles = StyleSheet.create({
+    main: {
+      flexDirection: isMobile ? 'column' : 'row',
+      maxWidth: 900,
+    },
+    ingredientsContainer: {
+      margin: 10,
+      flexDirection: 'column',
+      flex: isMobile ? undefined : 1,
+    },
+    instructionsContainer: {
+      margin: 10,
+      flexDirection: 'column',
+      flex: isMobile ? undefined : 3,
+    },
+    image: {
+      width,
+      height: height / 3,
+      resizeMode: 'contain',
+    },
+    description: {
+      alignSelf: 'stretch',
+      flexWrap: 'wrap',
+      borderLeftColor: colors.primary,
+      borderLeftWidth: 5,
+      padding: 10,
+      marginBottom: 10,
+    },
+  });
+  return (
+    <>
+      {recipe?.imageUrl ? (
+        <TouchableHighlight
+          onPress={() => navigation.navigate('Image', { imageUrl: recipe.imageUrl! })}
+        >
+          <Image style={styles.image} source={{ uri: recipe.imageUrl }} />
+        </TouchableHighlight>
+      ) : null}
+
+      <View style={styles.main}>
+        <View style={styles.ingredientsContainer}>{recipe && <Ingredients recipe={recipe} />}</View>
+        <View style={styles.instructionsContainer}>
+          {recipe && recipe.description && (
+            <Paragraph style={styles.description}>{recipe.description}</Paragraph>
+          )}
+          {recipe && <Instructions recipe={recipe} />}
+        </View>
+      </View>
+    </>
+  );
+}
+
+const Ingredients = ({ recipe }: Readonly<{ recipe: Recipe }>) => (
   <>
     <View style={defaultStyles.metadata}>
       {recipe.recipeYield && (
@@ -61,11 +177,7 @@ const Ingredients = ({ recipe }: IngredientsProps) => (
   </>
 );
 
-interface InstructionsProps {
-  recipe: Recipe;
-}
-
-const Instructions = ({ recipe }: InstructionsProps) => (
+const Instructions = ({ recipe }: Readonly<{ recipe: Recipe }>) => (
   <>
     {recipe.instructions.map((instruction, index) => (
       <Paragraph
@@ -80,99 +192,19 @@ const Instructions = ({ recipe }: InstructionsProps) => (
   </>
 );
 
-export default function RecipeDetail({ route, navigation }: RecipeDetailProps) {
-  const { id } = route.params;
-  const { colors } = useTheme();
-  const { width, height } = useDimension();
-  const isMobile = useMediaQuery({
-    maxWidth: 500,
-  });
-
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: colors.background,
-      flex: 1,
-    },
-    contentContainerStyle: {
-      alignItems: 'center',
-    },
-    main: {
-      flexDirection: isMobile ? 'column' : 'row',
-      maxWidth: 900,
-    },
-    ingredientsContainer: {
-      margin: 10,
-      flexDirection: 'column',
-      flex: isMobile ? undefined : 1,
-    },
-    instructionsContainer: {
-      margin: 10,
-      flexDirection: 'column',
-      flex: isMobile ? undefined : 3,
-    },
-    image: {
-      width,
-      height: height / 3,
-      resizeMode: 'contain',
-    },
-    header: {
-      flexDirection: 'row',
-    },
-    description: {
-      alignSelf: 'stretch',
-      flexWrap: 'wrap',
-      borderLeftColor: colors.primary,
-      borderLeftWidth: 5,
-      padding: 10,
-      marginBottom: 10,
-    },
-  });
-
-  const { loading, data, refetch } = useQuery<GetRecipeData, GetRecipeVars>(GET_RECIPE, {
-    variables: { id },
-  });
-  const recipe = data?.getRecipe;
-
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.contentContainerStyle}
-        refreshControl={
-          <RefreshControl
-            refreshing={loading}
-            onRefresh={() => {
-              refetch({
-                id,
-              });
-            }}
-          />
-        }
-      >
-        {recipe?.imageUrl ? (
-          <TouchableHighlight
-            onPress={() => navigation.navigate('Image', { imageUrl: recipe.imageUrl! })}
-          >
-            <Image style={styles.image} source={{ uri: recipe.imageUrl }} />
-          </TouchableHighlight>
-        ) : null}
-
-        <View style={styles.main}>
-          <View style={styles.ingredientsContainer}>
-            {recipe && <Ingredients recipe={recipe} />}
-          </View>
-          <View style={styles.instructionsContainer}>
-            {recipe && recipe.description && (
-              <Paragraph style={styles.description}>{recipe.description}</Paragraph>
-            )}
-            {recipe && <Instructions recipe={recipe} />}
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
-}
-
 const defaultStyles = StyleSheet.create({
+  errorContainer: {
+    padding: 60,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errorTitle: {
+    marginBottom: 20,
+  },
+  loader: {
+    padding: 60,
+  },
   ingredients: {
     padding: 10,
   },

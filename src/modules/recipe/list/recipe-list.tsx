@@ -72,7 +72,7 @@ export default function RecipeList({ navigation }: RecipeListProps) {
         keyExtractor={(item: Recipe) => item.id}
       />
       <Snackbar visible={!!error} onDismiss={onDismissSnackBar}>
-        {error && error.message ? error.message : 'Failed'}
+        {error?.message ?? 'Failed'}
       </Snackbar>
       <ImportModalVisible
         visible={isImportModalVisible}

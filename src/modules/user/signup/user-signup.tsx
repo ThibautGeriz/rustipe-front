@@ -37,9 +37,13 @@ export default function UserSignup({ navigation, route }: UserSignupProps) {
   const onError = () => {
     setVisible(true);
   };
+  const onCompleted = () => {
+    setVisible(false);
+  };
 
   const [signup, { loading, error: mutationError }] = useMutation(SIGNUP, {
     onError,
+    onCompleted,
   });
   const [emailError, setEmailError] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<string>('');
@@ -126,8 +130,15 @@ export default function UserSignup({ navigation, route }: UserSignupProps) {
           </TouchableHighlight>
         </View>
       </KeyboardAwareScrollView>
-      <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
-        {mutationError && mutationError.message ? mutationError.message : undefined}
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: 'Ok',
+          onPress: onDismissSnackBar,
+        }}
+      >
+        {mutationError?.message}
       </Snackbar>
     </View>
   );

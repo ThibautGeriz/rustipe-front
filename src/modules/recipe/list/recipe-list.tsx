@@ -12,6 +12,7 @@ import NoRecipeResult from './components/no-recipe-result';
 import type Recipe from '../models/recipe';
 import type { RecipeListProps } from './screen';
 import { GetMyRecipeData, GetMyRecipeVars, GET_MY_RECIPES } from './recipe-list-query';
+import Error from '../../components/error';
 
 export default function RecipeList({ navigation }: RecipeListProps) {
   const { colors } = useTheme();
@@ -19,22 +20,30 @@ export default function RecipeList({ navigation }: RecipeListProps) {
     maxWidth: 900,
   });
   const [isFabVisible, setFabVisibility] = React.useState(false);
+  const [error, setError] = React.useState<Error | null>(null);
+  const [showSnackBar, setShowSnackBar] = React.useState(false);
   const onFabVisiblityToggle = () => setFabVisibility(!isFabVisible);
   const [isImportModalVisible, setImportModalVisible] = React.useState(false);
   const onImportModalVisibilityToggle = () => setImportModalVisible(!isImportModalVisible);
   const [searchQuery, setSearchQuery] = React.useState<string | null>(null);
-  const result = useQuery<GetMyRecipeData, GetMyRecipeVars>(GET_MY_RECIPES, {
+  const { loading, data, refetch } = useQuery<GetMyRecipeData, GetMyRecipeVars>(GET_MY_RECIPES, {
     variables: { query: searchQuery },
+    onError: (err) => {
+      setError(err);
+      setShowSnackBar(true);
+    },
+    onCompleted: () => {
+      setError(null);
+      setShowSnackBar(false);
+    },
   });
-  const { loading, data, refetch } = result;
   const onChangeSearch = (query: string) => {
     setSearchQuery(query);
     refetch({ query });
   };
 
-  let { error } = result;
   const onDismissSnackBar = () => {
-    error = undefined;
+    setShowSnackBar(false);
   };
   const Item = isMobile ? SmallItem : BigItem;
   const recipies: Recipe[] = (data || {}).getMyRecipes || [];
@@ -44,6 +53,9 @@ export default function RecipeList({ navigation }: RecipeListProps) {
   }
   if (loading) {
     ListEmptyComponent = <ActivityIndicator size="large" style={styles.activityIndicator} />;
+  }
+  if (error) {
+    ListEmptyComponent = <Error message={error.message} />;
   }
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -71,8 +83,15 @@ export default function RecipeList({ navigation }: RecipeListProps) {
         )}
         keyExtractor={(item: Recipe) => item.id}
       />
-      <Snackbar visible={!!error} onDismiss={onDismissSnackBar}>
-        {error && error.message ? error.message : 'Failed'}
+      <Snackbar
+        visible={showSnackBar}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: 'Ok',
+          onPress: onDismissSnackBar,
+        }}
+      >
+        {error?.message ?? 'Failed'}
       </Snackbar>
       <ImportModalVisible
         visible={isImportModalVisible}

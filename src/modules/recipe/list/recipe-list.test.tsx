@@ -111,7 +111,7 @@ describe('Recipe List Item', () => {
       await wait();
       // then
       expect(component.getByTestId('FlatList')).toHaveProp('refreshing', false);
-      expect(component.getByText('aw shucks')).toBeEnabled();
+      component.getAllByText('aw shucks').forEach((e: any) => expect(e).toBeEnabled());
     });
   });
 });
